@@ -13,12 +13,14 @@ import com.webfirmframework.wffweb.tag.html.attribute.Href;
 import com.webfirmframework.wffweb.tag.html.attribute.Name;
 import com.webfirmframework.wffweb.tag.html.attribute.Rel;
 import com.webfirmframework.wffweb.tag.html.attribute.Src;
+import com.webfirmframework.wffweb.tag.html.attribute.Target;
 import com.webfirmframework.wffweb.tag.html.attribute.event.ServerAsyncMethod;
 import com.webfirmframework.wffweb.tag.html.attribute.event.mouse.OnClick;
 import com.webfirmframework.wffweb.tag.html.attribute.global.ClassAttribute;
 import com.webfirmframework.wffweb.tag.html.attribute.global.Id;
 import com.webfirmframework.wffweb.tag.html.formsandinputs.Button;
 import com.webfirmframework.wffweb.tag.html.html5.attribute.Content;
+import com.webfirmframework.wffweb.tag.html.links.A;
 import com.webfirmframework.wffweb.tag.html.links.Link;
 import com.webfirmframework.wffweb.tag.html.metainfo.Head;
 import com.webfirmframework.wffweb.tag.html.metainfo.Meta;
@@ -82,6 +84,22 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
         new Body(this) {{
             
             new Div(this, new Id("mainDivId")) {{
+                
+                new NoTag(this, "session id " + documentModel.getHttpSession().getId());
+                
+                new Br(this);
+                
+                new A(this, new Href("https://webfirmframework.github.io/developers-guide/get-started.html"), 
+                        new Target(Target.BLANK)) {{
+                    new NoTag(this, "visit webfirmframework developers guide");
+                }};
+                
+                new Br(this);
+                
+                new A(this, new Href("https://foundation.zurb.com/sites/docs/kitchen-sink.html"), 
+                        new Target(Target.BLANK)) {{
+                    new NoTag(this, "visit foundation tutorial");
+                }};
                 
                 new H1(this) {{
                     new NoTag(this, "Sample with foundation css framework ");  

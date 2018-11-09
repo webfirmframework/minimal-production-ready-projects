@@ -1,8 +1,8 @@
 package com.wffwebdemo.minimalproductionsample.server.ws;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletRequestEvent;
@@ -25,15 +25,16 @@ import javax.websocket.server.ServerEndpointConfig.Configurator;
 import com.webfirmframework.wffweb.PushFailedException;
 import com.webfirmframework.wffweb.server.page.BrowserPage;
 import com.webfirmframework.wffweb.server.page.BrowserPageContext;
-import com.webfirmframework.wffweb.server.page.WebSocketPushListener;
 import com.webfirmframework.wffweb.server.page.action.BrowserPageAction;
+import com.wffwebdemo.minimalproductionsample.page.IndexPage;
+import com.wffwebdemo.minimalproductionsample.page.model.DocumentModel;
 import com.wffwebdemo.minimalproductionsample.server.constants.ServerConstants;
 import com.wffwebdemo.minimalproductionsample.server.util.HeartBeatUtil;
 
 /**
  * @ServerEndpoint gives the relative name for the end point This will be
  *                 accessed via
- *                 ws://localhost:8080/wffwebdemoproject/ws-for-wffweb.
+ *                 ws://localhost:8080/minimalproductionsample/ws-for-index-page
  */
 @ServerEndpoint(value = ServerConstants.INDEX_PAGE_WS_URI, configurator = WSServerForIndexPage.class)
 @WebListener
@@ -56,12 +57,29 @@ public class WSServerForIndexPage extends Configurator
     public void modifyHandshake(ServerEndpointConfig config,
             HandshakeRequest request, HandshakeResponse response) {
 
-        HttpSession httpSession = (HttpSession) request.getHttpSession();
+        final Map<String, List<String>> parameterMap = request
+                .getParameterMap();
+
+        HttpSession httpSession = null;
+
+        List<String> wffInstanceIds = parameterMap
+                .get(BrowserPage.WFF_INSTANCE_ID);
+        String instanceId = wffInstanceIds.get(0);
+        browserPage = BrowserPageContext.INSTANCE.webSocketOpened(instanceId);
+        DocumentModel documentModel = null;
+
+        if (browserPage instanceof IndexPage) {
+            IndexPage indexPage = (IndexPage) browserPage;
+            documentModel = indexPage.getDocumentModel();
+            httpSession = documentModel.getHttpSession();
+        }
 
         super.modifyHandshake(config, request, response);
 
+        // in a worst case if the httpSession is null
         if (httpSession == null) {
-            LOGGER.info("httpSession == null after modifyHandshake");
+            LOGGER.info(
+                    "httpSession == null after modifyHandshake so httpSession = (HttpSession) request.getHttpSession()");
             httpSession = (HttpSession) request.getHttpSession();
         }
 
@@ -71,8 +89,6 @@ public class WSServerForIndexPage extends Configurator
         }
 
         config.getUserProperties().put("httpSession", httpSession);
-
-        httpSession = (HttpSession) request.getHttpSession();
         LOGGER.info("modifyHandshake " + httpSession.getId());
 
     }
@@ -136,18 +152,13 @@ public class WSServerForIndexPage extends Configurator
 
         }
 
-        browserPage.addWebSocketPushListener(session.getId(),
-                new WebSocketPushListener() {
-
-                    @Override
-                    public synchronized void push(ByteBuffer data) {
-                        try {
-                            session.getBasicRemote().sendBinary(data);
-                        } catch (Throwable e) {
-                            throw new PushFailedException(e.getMessage(), e);
-                        }
-                    }
-                });
+        browserPage.addWebSocketPushListener(session.getId(), data -> {
+            try {
+                session.getBasicRemote().sendBinary(data);
+            } catch (Throwable e) {
+                throw new PushFailedException(e.getMessage(), e);
+            }
+        });
 
     }
 
