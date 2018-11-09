@@ -20,6 +20,7 @@ public class HeartBeatUtil {
             return;
         }
 
+        // TODO this code may be improved
         Thread thread = new Thread(new Runnable() {
 
             @Override
@@ -51,7 +52,7 @@ public class HeartBeatUtil {
                     while ((inputLine = in.readLine()) != null) {
                         response.append(inputLine);
                     }
-                    in.close();
+
                     LOGGER.info("heartbeat response " + response);
 
                 } catch (Exception e) {
