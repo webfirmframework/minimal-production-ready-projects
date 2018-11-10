@@ -5,6 +5,7 @@ import com.webfirmframework.wffweb.tag.html.Br;
 import com.webfirmframework.wffweb.tag.html.H3;
 import com.webfirmframework.wffweb.tag.html.attribute.Type;
 import com.webfirmframework.wffweb.tag.html.attribute.event.ServerAsyncMethod;
+import com.webfirmframework.wffweb.tag.html.attribute.event.form.OnSubmit;
 import com.webfirmframework.wffweb.tag.html.attribute.event.mouse.OnClick;
 import com.webfirmframework.wffweb.tag.html.attribute.global.ClassAttribute;
 import com.webfirmframework.wffweb.tag.html.formsandinputs.Button;
@@ -44,7 +45,7 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
         }};
         
         
-        new Form(this) {{
+        new Form(this, new OnSubmit("event.preventDefault(); return true;", this, null, null)) {{
             new Div(this,
                 new ClassAttribute("grid-x grid-padding-x")) {{
                 new Div(this,
