@@ -36,7 +36,7 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
         changeTitle();
         
         
-        new H3(this) {{
+        new H3(this, new ClassAttribute("red-text text-accent-3")) {{
             new NoTag(this, "SampleTemplate1.java");
         }};
         
