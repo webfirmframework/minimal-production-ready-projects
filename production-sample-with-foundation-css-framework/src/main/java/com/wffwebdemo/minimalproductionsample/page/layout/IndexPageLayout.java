@@ -9,6 +9,7 @@ import com.webfirmframework.wffweb.tag.html.H1;
 import com.webfirmframework.wffweb.tag.html.Html;
 import com.webfirmframework.wffweb.tag.html.TitleTag;
 import com.webfirmframework.wffweb.tag.html.attribute.Charset;
+import com.webfirmframework.wffweb.tag.html.attribute.Defer;
 import com.webfirmframework.wffweb.tag.html.attribute.Href;
 import com.webfirmframework.wffweb.tag.html.attribute.Name;
 import com.webfirmframework.wffweb.tag.html.attribute.Rel;
@@ -71,12 +72,15 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                 new Src("https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"));
             
             new Script(this,
-                new Src("assets/js/vendor/what-input.js"));
+                    new Defer(),
+                    new Src("assets/js/vendor/what-input.js"));
             
             new Script(this,
+                    new Defer(),
                     new Src("assets/js/vendor/foundation.min.js"));
             
             new Script(this,
+                    new Defer(),
                     new Src("assets/js/app.js"));
             
         }};

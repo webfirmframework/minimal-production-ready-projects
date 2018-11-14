@@ -9,6 +9,7 @@ import com.webfirmframework.wffweb.tag.html.H1;
 import com.webfirmframework.wffweb.tag.html.Html;
 import com.webfirmframework.wffweb.tag.html.TitleTag;
 import com.webfirmframework.wffweb.tag.html.attribute.Charset;
+import com.webfirmframework.wffweb.tag.html.attribute.Defer;
 import com.webfirmframework.wffweb.tag.html.attribute.Href;
 import com.webfirmframework.wffweb.tag.html.attribute.Name;
 import com.webfirmframework.wffweb.tag.html.attribute.Rel;
@@ -76,6 +77,7 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
             
             
             new Script(this,
+                new Defer(),
                 new Src("https://code.jquery.com/jquery-3.2.1.slim.min.js"),
                 new CustomAttribute("integrity", "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"),
                 crossOriginAnonymous) {{
@@ -83,6 +85,7 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
             }};
             
             new Script(this,
+                new Defer(),    
                 new Src("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"),
                 new CustomAttribute("integrity", "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"),
                 crossOriginAnonymous) {{
@@ -90,12 +93,14 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
             }};
             
             new Script(this,
+                new Defer(),
                 new Src("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"),
                 new CustomAttribute("integrity", "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"),
                 crossOriginAnonymous);
                 
             
             new Script(this,
+                    new Defer(),
                     new Src("assets/js/app.js"));
             
         }};

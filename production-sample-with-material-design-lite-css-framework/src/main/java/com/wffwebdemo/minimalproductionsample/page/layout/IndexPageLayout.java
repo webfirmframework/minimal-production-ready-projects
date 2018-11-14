@@ -81,6 +81,7 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                     new Src("https://code.getmdl.io/1.3.0/material.min.js"));
                 
             new Script(this,
+                    new Defer(),
                     new Src("assets/js/app.js"));
             
         }};
