@@ -37,8 +37,9 @@ import com.wffwebdemo.minimalproductionsample.page.template.SampleTemplate1;
 
 @SuppressWarnings("serial")
 public class IndexPageLayout extends Html implements ServerAsyncMethod {
-    
-    private static final Logger LOGGER = Logger.getLogger(IndexPageLayout.class.getName());
+
+    private static final Logger LOGGER = Logger
+            .getLogger(IndexPageLayout.class.getName());
 
     private DocumentModel documentModel;
 
@@ -50,6 +51,7 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
         develop();
     }
 
+ // @formatter:off
     private void develop() {
 
         new Head(this) {{
@@ -169,25 +171,30 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
         }};
         
     }
+ // @formatter:on
 
     @Override
     public WffBMObject asyncMethod(WffBMObject wffBMObject, Event event) {
 
-        TagRepository tagRepository = documentModel.getBrowserPage().getTagRepository();
-        
+        TagRepository tagRepository = documentModel.getBrowserPage()
+                .getTagRepository();
+
         AbstractHtml mainDiv = tagRepository.findTagById("mainDivId");
-        
+
         final AbstractHtml firstChild = mainDiv.getFirstChild();
-        
-        System.out.println("mainDiv.getFirstChild() " + firstChild.toHtmlString());
-        
+
+        System.out.println(
+                "mainDiv.getFirstChild() " + firstChild.toHtmlString());
+
         if (mainDiv != null) {
             LOGGER.info("SampleTemplate1 appended");
             mainDiv.appendChild(new SampleTemplate1(documentModel));
-            TitleTag titleTag = tagRepository.findOneTagAssignableToTag(TitleTag.class);
-            titleTag.addInnerHtml(new NoTag(null, "Bootstrap Example | SampleTemplate1"));
+            TitleTag titleTag = tagRepository
+                    .findOneTagAssignableToTag(TitleTag.class);
+            titleTag.addInnerHtml(
+                    new NoTag(null, "Bootstrap Example | SampleTemplate1"));
         }
-        
+
         return null;
     }
 

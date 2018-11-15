@@ -32,6 +32,7 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
         develop();
     }
 
+ // @formatter:off
     private void develop() {
         changeTitle();
         
@@ -65,10 +66,13 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
         new Br(this);
         new Br(this);
     }
-    
+ // @formatter:on
+
     private void changeTitle() {
-        // getTagRepository() will give object only if the browserPage.render is returned
-        TagRepository tagRepository = documentModel.getBrowserPage().getTagRepository();
+        // getTagRepository() will give object only if the browserPage.render is
+        // returned
+        TagRepository tagRepository = documentModel.getBrowserPage()
+                .getTagRepository();
         if (tagRepository != null) {
             AbstractHtml title = tagRepository.findTagById("windowTitleId");
             if (title != null) {
@@ -79,10 +83,10 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
 
     @Override
     public WffBMObject asyncMethod(WffBMObject wffBMObject, Event event) {
-        
+
         this.insertBefore(new SampleTemplate2(documentModel));
         this.getParent().removeChild(this);
-        
+
         return null;
     }
 }

@@ -33,6 +33,7 @@ public class SampleTemplate2 extends Div implements ServerAsyncMethod {
         develop();
     }
 
+ // @formatter:off
     private void develop() {
         changeTitle();
         
@@ -67,34 +68,35 @@ public class SampleTemplate2 extends Div implements ServerAsyncMethod {
             }};
         }};
     }
-    
+ // @formatter:on
+
     private void changeTitle() {
-        
-        // getTagRepository() will give object only if the browserPage.render is returned
-        TagRepository tagRepository = documentModel.getBrowserPage().getTagRepository();
+
+        // getTagRepository() will give object only if the browserPage.render is
+        // returned
+        TagRepository tagRepository = documentModel.getBrowserPage()
+                .getTagRepository();
         if (tagRepository != null) {
             AbstractHtml title = tagRepository.findTagById("windowTitleId");
             if (title != null) {
                 title.addInnerHtml(new NoTag(null, "SampleTemplate2"));
-            } 
+            }
         }
-        
-        
-        
+
     }
-    
+
     @Override
     public WffBMObject asyncMethod(WffBMObject data, Event event) {
-        
+
         System.out.println("full name: " + data.getValue("name"));
-        
+
         this.insertBefore(new SampleTemplate1(documentModel));
         this.getParent().removeChild(this);
-        
-        
+
         WffBMObject result = new WffBMObject();
-        result.put("msg", BMValueType.STRING, "This msg will be printed in the browser console.");
-        
+        result.put("msg", BMValueType.STRING,
+                "This msg will be printed in the browser console.");
+
         return result;
     }
 }
