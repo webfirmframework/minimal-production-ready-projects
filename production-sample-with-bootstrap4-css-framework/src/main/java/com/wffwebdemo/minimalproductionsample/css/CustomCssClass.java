@@ -17,6 +17,8 @@ import static com.webfirmframework.wffweb.util.StringUtil.splitBySpace;
  * <pre>
  * <code>
  * ClassAttribute classAttributeFromCssClasses = CustomCssClass.CUSTOM_CLASS.merge(Bootstrap4CssClass.BTN_DANGER);
+ * 
+ * ClassAttribute classAttributeFromCssClasses2 = CustomCssClass.CUSTOM_CLASS.merge(Bootstrap4CssClass.BTN_DANGER, Bootstrap4CssClass.BTN_GROUP, CustomCssClass.CUSTOM_CLASS2);
  * </code>
  * </pre>
  *
@@ -24,6 +26,8 @@ import static com.webfirmframework.wffweb.util.StringUtil.splitBySpace;
 public enum CustomCssClass implements CssClass {
 
     CUSTOM_CLASS("custom-class"),
+
+    CUSTOM_CLASS2("custom-class2"),
 
     ;
 

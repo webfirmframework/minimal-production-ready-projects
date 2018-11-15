@@ -10,9 +10,13 @@ import java.util.List;
 import static com.webfirmframework.wffweb.util.StringUtil.splitBySpace;
 
 /**
- * bootstrap4 classes but this is not complete. It may also contain bootstrap3
- * classes so use it carefully. NB: update it with bootstrap4 doc.
  * 
+ * Keeping an enum for css classes will prevent developer mistakes declaring
+ * class names. It will also help us to know what are the classes available in
+ * the whole project.
+ * <br><br>
+ * It contains bootstrap4 classes but this is not complete. It may also contain
+ * bootstrap3 classes so use it carefully. NB: update it with bootstrap4 doc.
  * You can also merge from custom classes, Eg:
  * 
  * <pre>
