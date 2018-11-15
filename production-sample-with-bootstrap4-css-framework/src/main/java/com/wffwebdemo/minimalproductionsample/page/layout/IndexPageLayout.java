@@ -32,6 +32,8 @@ import com.webfirmframework.wffweb.tag.htmlwff.NoTag;
 import com.webfirmframework.wffweb.tag.repository.TagRepository;
 import com.webfirmframework.wffweb.wffbm.data.BMValueType;
 import com.webfirmframework.wffweb.wffbm.data.WffBMObject;
+import com.wffwebdemo.minimalproductionsample.css.Bootstrap4CssClass;
+import com.wffwebdemo.minimalproductionsample.css.CustomCssClass;
 import com.wffwebdemo.minimalproductionsample.page.model.DocumentModel;
 import com.wffwebdemo.minimalproductionsample.page.template.SampleTemplate1;
 
@@ -131,15 +133,13 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                     new NoTag(this, "Sample with foundation css framework ");  
                 }};
                 
-                
                 new Button(this, new OnClick(IndexPageLayout.this), 
-                        new ClassAttribute("btn btn-success")) {{
+                        Bootstrap4CssClass.BTN_SUCCESS.getAttribute()) {{
                     new NoTag(this, "Insert SampleTemplate1");
                 }};
                 
-                
                 new Button(this,
-                        new ClassAttribute("btn btn-danger"),
+                        Bootstrap4CssClass.BTN_DANGER_SM.getAttribute(),
                         new OnClick("return confirm('Do you want to send some data to server to print in server console?');", 
                         (data, event) -> {
                             String value = (String) data.getValue("val");
@@ -175,6 +175,8 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
 
     @Override
     public WffBMObject asyncMethod(WffBMObject wffBMObject, Event event) {
+        
+        
 
         TagRepository tagRepository = documentModel.getBrowserPage()
                 .getTagRepository();

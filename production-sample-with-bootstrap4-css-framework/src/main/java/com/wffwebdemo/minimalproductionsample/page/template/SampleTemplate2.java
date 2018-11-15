@@ -7,7 +7,6 @@ import com.webfirmframework.wffweb.tag.html.attribute.Name;
 import com.webfirmframework.wffweb.tag.html.attribute.Type;
 import com.webfirmframework.wffweb.tag.html.attribute.event.ServerAsyncMethod;
 import com.webfirmframework.wffweb.tag.html.attribute.event.form.OnSubmit;
-import com.webfirmframework.wffweb.tag.html.attribute.global.ClassAttribute;
 import com.webfirmframework.wffweb.tag.html.attribute.global.Id;
 import com.webfirmframework.wffweb.tag.html.formsandinputs.Button;
 import com.webfirmframework.wffweb.tag.html.formsandinputs.Form;
@@ -20,6 +19,7 @@ import com.webfirmframework.wffweb.tag.htmlwff.NoTag;
 import com.webfirmframework.wffweb.tag.repository.TagRepository;
 import com.webfirmframework.wffweb.wffbm.data.BMValueType;
 import com.webfirmframework.wffweb.wffbm.data.WffBMObject;
+import com.wffwebdemo.minimalproductionsample.css.Bootstrap4CssClass;
 import com.wffwebdemo.minimalproductionsample.page.model.DocumentModel;
 
 @SuppressWarnings("serial")
@@ -28,7 +28,7 @@ public class SampleTemplate2 extends Div implements ServerAsyncMethod {
     private DocumentModel documentModel;
 
     public SampleTemplate2(DocumentModel documentModel) {
-        super(null, new ClassAttribute("container"));
+        super(null, Bootstrap4CssClass.CONTAINER.getAttribute());
         this.documentModel = documentModel;
         develop();
     }
@@ -47,13 +47,13 @@ public class SampleTemplate2 extends Div implements ServerAsyncMethod {
                 "console.log(jsObject.msg); alert('The full name is printed in server console');")) {{
             
             new Div(this,
-                new ClassAttribute("form-group")) {{
+                    Bootstrap4CssClass.FORM_GROUP.getAttribute()) {{
                     
                     new Label(this, new For("fullnameId")) {{
                         new NoTag(this, "Full Name");
                     }};
                     new Input(this,
-                        new ClassAttribute("form-control"),
+                            Bootstrap4CssClass.FORM_CONTROL.getAttribute(),
                         new Id("fullnameId"),
                         new Name("fullname"),
                         new Type(Type.TEXT),
@@ -63,7 +63,7 @@ public class SampleTemplate2 extends Div implements ServerAsyncMethod {
             
             new Button(this,
                 new Type(Type.SUBMIT),
-                new ClassAttribute("btn btn-primary")) {{
+                Bootstrap4CssClass.BTN_PRIMARY.getAttribute()) {{
                 new NoTag(this, "Submit");
             }};
         }};

@@ -8,7 +8,6 @@ import com.webfirmframework.wffweb.tag.html.attribute.Type;
 import com.webfirmframework.wffweb.tag.html.attribute.event.ServerAsyncMethod;
 import com.webfirmframework.wffweb.tag.html.attribute.event.form.OnSubmit;
 import com.webfirmframework.wffweb.tag.html.attribute.event.mouse.OnClick;
-import com.webfirmframework.wffweb.tag.html.attribute.global.ClassAttribute;
 import com.webfirmframework.wffweb.tag.html.attribute.global.Id;
 import com.webfirmframework.wffweb.tag.html.formsandinputs.Button;
 import com.webfirmframework.wffweb.tag.html.formsandinputs.Form;
@@ -19,6 +18,7 @@ import com.webfirmframework.wffweb.tag.html.stylesandsemantics.Div;
 import com.webfirmframework.wffweb.tag.htmlwff.NoTag;
 import com.webfirmframework.wffweb.tag.repository.TagRepository;
 import com.webfirmframework.wffweb.wffbm.data.WffBMObject;
+import com.wffwebdemo.minimalproductionsample.css.Bootstrap4CssClass;
 import com.wffwebdemo.minimalproductionsample.page.model.DocumentModel;
 
 @SuppressWarnings("serial")
@@ -27,7 +27,7 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
     private DocumentModel documentModel;
 
     public SampleTemplate1(DocumentModel documentModel) {
-        super(null, new ClassAttribute("container"));
+        super(null, Bootstrap4CssClass.CONTAINER.getAttribute());
         this.documentModel = documentModel;
         develop();
     }
@@ -44,14 +44,14 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
         
         new Form(this, new OnSubmit("event.preventDefault(); return true;", this, null, null)) {{
             new Div(this,
-                new ClassAttribute("form-group")) {{
+                Bootstrap4CssClass.FORM_GROUP.getAttribute()) {{
                     new Label(this, new For("inputId")) {{
                         new NoTag(this, "Email Input");
                     }};
                     new Input(this,
                         new Id("inputId"),    
                         new Type(Type.EMAIL),
-                        new ClassAttribute("form-control"),
+                        Bootstrap4CssClass.FORM_CONTROL.getAttribute(),
                         new Placeholder("Eg: tech-support@webfirmframework.com"));
             }};
         }};
@@ -60,7 +60,7 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
         
         new Br(this);
         
-        new Button(this, new OnClick(SampleTemplate1.this), new ClassAttribute("btn btn-secondary")) {{
+        new Button(this, new OnClick(SampleTemplate1.this), Bootstrap4CssClass.BTN_SECONDARY.getAttribute()) {{
             new NoTag(this, "Click Me to change to SampleTemplate2");
         }};
         new Br(this);
