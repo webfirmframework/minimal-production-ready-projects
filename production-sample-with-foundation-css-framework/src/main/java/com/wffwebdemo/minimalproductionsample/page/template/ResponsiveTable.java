@@ -6,8 +6,10 @@ import java.util.Collection;
 import java.util.List;
 
 import com.webfirmframework.wffweb.tag.html.AbstractHtml;
+import com.webfirmframework.wffweb.tag.html.attribute.event.mouse.OnClick;
 import com.webfirmframework.wffweb.tag.html.attribute.global.ClassAttribute;
 import com.webfirmframework.wffweb.tag.html.html5.attribute.global.DataAttribute;
+import com.webfirmframework.wffweb.tag.html.links.A;
 import com.webfirmframework.wffweb.tag.html.tables.TBody;
 import com.webfirmframework.wffweb.tag.html.tables.THead;
 import com.webfirmframework.wffweb.tag.html.tables.Table;
@@ -37,7 +39,7 @@ public class ResponsiveTable extends Table {
     // @formatter:off
     private void develop() {
         
-        List<String> headNames = Arrays.asList("First Name", "Last Name", "Hero Title");
+        List<String> headNames = Arrays.asList("First Name", "Last Name", "Hero Title", "Action");
         
        
         Collection<Collection<String>> rows = new ArrayList<>();
@@ -95,6 +97,8 @@ public class ResponsiveTable extends Table {
     
     private void developTr(TBody tBody, List<String> headNames, Collection<String> row) {
         Tr tr = new Tr(this) {{
+            Tr thisTr = this;
+            
             int i = 0;
             for (String cellValue : row) {
                 new Td(this,
@@ -103,7 +107,16 @@ public class ResponsiveTable extends Table {
                 }};
                 i++;
             }
-            
+            new Td(this,
+                    new DataAttribute("label", "Action")) {{
+                new A(this, new ClassAttribute("clear button alert"), 
+                        new OnClick((bm, event) -> {
+                                thisTr.getParent().removeChild(thisTr);
+                                return null;
+                            })) {{
+                    new NoTag(this, "delete");
+                }};
+            }};
         }};
         tBody.appendChildren(tr);
     }
