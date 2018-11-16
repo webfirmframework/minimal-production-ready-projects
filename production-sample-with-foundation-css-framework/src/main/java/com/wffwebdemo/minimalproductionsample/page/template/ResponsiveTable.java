@@ -15,16 +15,21 @@ import com.webfirmframework.wffweb.tag.html.tables.Td;
 import com.webfirmframework.wffweb.tag.html.tables.Th;
 import com.webfirmframework.wffweb.tag.html.tables.Tr;
 import com.webfirmframework.wffweb.tag.htmlwff.NoTag;
+import com.wffwebdemo.minimalproductionsample.page.model.DocumentModel;
 
 /**
- * The html code is referred from https://foundation.zurb.com/building-blocks/blocks/responsive-card-table.html.
+ * The html code is referred from
+ * https://foundation.zurb.com/building-blocks/blocks/responsive-card-table.html.
  * The assets/css/app.css contains css for this table.
  */
 @SuppressWarnings("serial")
 public class ResponsiveTable extends Table {
 
-    public ResponsiveTable(AbstractHtml base) {
+    private DocumentModel documentModel;
+
+    public ResponsiveTable(AbstractHtml base, DocumentModel documentModel) {
         super(base, new ClassAttribute("responsive-card-table unstriped"));
+        this.documentModel = documentModel;
 
         develop();
     }
@@ -46,7 +51,7 @@ public class ResponsiveTable extends Table {
         }
         
         //thead of table
-        new THead(this) {{
+        THead tHead = new THead(this) {{
             new Tr(this) {{
                 for (String headName : headNames) {
                     new Th(this) {{
@@ -58,9 +63,32 @@ public class ResponsiveTable extends Table {
         
         //tbody of table
         new TBody(this) {{
-            for (Collection<String> row : rows) {
-                developTr(this, headNames, row);
-            }
+            
+            //used thread to very slowly add rows to the table.
+            //To prove other ui portions can be
+            //updated while inserting row in to the table
+            Thread thread = new Thread(() -> {                
+                for (Collection<String> row : rows) {
+                    
+                    // if the tHead tag is not available in the ui the stop inserting row
+                    if (documentModel.getBrowserPage().getTagRepository() != null && 
+                            !documentModel.getBrowserPage().getTagRepository().exists(tHead)) {
+                        System.out.println("TBody instance is not available in the ui or removed it so breaking");
+                        break;
+                    }
+                    
+                    developTr(this, headNames, row);
+                    
+                    try {
+                        //to make a delay of 1 second
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.setDaemon(true);
+            thread.start();
         }};    
         
     }

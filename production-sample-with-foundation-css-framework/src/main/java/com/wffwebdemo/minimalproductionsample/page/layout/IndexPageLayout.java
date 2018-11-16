@@ -116,7 +116,7 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                 }};
                 
                 //responsive table
-                new ResponsiveTable(this);               
+                new ResponsiveTable(this, documentModel);               
                 
                 
                 new Button(this, new OnClick(IndexPageLayout.this), 
