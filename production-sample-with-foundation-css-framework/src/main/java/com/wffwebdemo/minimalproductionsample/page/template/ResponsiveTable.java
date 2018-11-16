@@ -41,8 +41,11 @@ public class ResponsiveTable extends Table {
         rows.add(Arrays.asList("Bruce", "Banner", "The Hulk"));
         rows.add(Arrays.asList("Clark", "Kent", "Superman"));
         
+        for (int i = 0; i < 5; i++) {
+            rows.add(Arrays.asList("Dynamic fname" + i, "Dynamic lname" + i, "Dynamic Hero" +i));
+        }
         
-
+        //thead of table
         new THead(this) {{
             new Tr(this) {{
                 for (String headName : headNames) {
@@ -52,15 +55,17 @@ public class ResponsiveTable extends Table {
                 }               
             }};
         }};
+        
+        //tbody of table
         new TBody(this) {{
             for (Collection<String> row : rows) {
-                developTr(this, row, headNames);
+                developTr(this, headNames, row);
             }
         }};    
         
     }
     
-    private void developTr(TBody tBody, Collection<String> row, List<String> headNames) {
+    private void developTr(TBody tBody, List<String> headNames, Collection<String> row) {
         Tr tr = new Tr(this) {{
             int i = 0;
             for (String cellValue : row) {
