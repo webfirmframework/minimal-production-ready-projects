@@ -17,8 +17,8 @@ import com.webfirmframework.wffweb.tag.html.tables.Tr;
 import com.webfirmframework.wffweb.tag.htmlwff.NoTag;
 
 /**
- * assets/css/app.css contains css for this table
- *
+ * The html code is referred from https://foundation.zurb.com/building-blocks/.
+ * The assets/css/app.css contains css for this table.
  */
 @SuppressWarnings("serial")
 public class ResponsiveTable extends Table {
