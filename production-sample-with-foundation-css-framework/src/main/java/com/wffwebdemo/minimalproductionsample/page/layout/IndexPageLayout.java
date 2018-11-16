@@ -6,6 +6,7 @@ import com.webfirmframework.wffweb.tag.html.AbstractHtml;
 import com.webfirmframework.wffweb.tag.html.Body;
 import com.webfirmframework.wffweb.tag.html.Br;
 import com.webfirmframework.wffweb.tag.html.H1;
+import com.webfirmframework.wffweb.tag.html.H5;
 import com.webfirmframework.wffweb.tag.html.Html;
 import com.webfirmframework.wffweb.tag.html.TitleTag;
 import com.webfirmframework.wffweb.tag.html.attribute.Charset;
@@ -32,6 +33,7 @@ import com.webfirmframework.wffweb.tag.repository.TagRepository;
 import com.webfirmframework.wffweb.wffbm.data.BMValueType;
 import com.webfirmframework.wffweb.wffbm.data.WffBMObject;
 import com.wffwebdemo.minimalproductionsample.page.model.DocumentModel;
+import com.wffwebdemo.minimalproductionsample.page.template.ResponsiveTable;
 import com.wffwebdemo.minimalproductionsample.page.template.SampleTemplate1;
 
 @SuppressWarnings("serial")
@@ -108,6 +110,13 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                 new H1(this) {{
                     new NoTag(this, "Sample with foundation css framework ");  
                 }};
+                
+                new H5(this) {{
+                    new NoTag(this, "I'm a responsive table in foundation css, resize the browser and check");  
+                }};
+                
+                //responsive table
+                new ResponsiveTable(this);               
                 
                 
                 new Button(this, new OnClick(IndexPageLayout.this), 
