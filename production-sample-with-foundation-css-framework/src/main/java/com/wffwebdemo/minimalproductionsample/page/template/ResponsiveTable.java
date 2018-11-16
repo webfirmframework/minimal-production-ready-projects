@@ -17,7 +17,7 @@ import com.webfirmframework.wffweb.tag.html.tables.Tr;
 import com.webfirmframework.wffweb.tag.htmlwff.NoTag;
 
 /**
- * The html code is referred from https://foundation.zurb.com/building-blocks/.
+ * The html code is referred from https://foundation.zurb.com/building-blocks/blocks/responsive-card-table.html.
  * The assets/css/app.css contains css for this table.
  */
 @SuppressWarnings("serial")
