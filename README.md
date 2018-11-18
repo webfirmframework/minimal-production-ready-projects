@@ -15,3 +15,7 @@ ___
 
 ### Sample HTML code for foundation css framework
 #### [https://foundation.zurb.com/building-blocks/](https://foundation.zurb.com/building-blocks/) 
+
+
+Gives best result on Google Chrome
+
