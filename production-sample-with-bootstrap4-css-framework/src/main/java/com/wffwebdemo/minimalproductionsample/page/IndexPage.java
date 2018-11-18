@@ -26,8 +26,6 @@ public class IndexPage extends BrowserPage {
 
     private DocumentModel documentModel;
 
-    private IndexPageLayout indexPageLayout;
-
     private AbstractHtml mainDiv;
 
     private List<AbstractHtml> mainDivChildren;
@@ -42,36 +40,48 @@ public class IndexPage extends BrowserPage {
                 .concat(ServerConstants.INDEX_PAGE_WS_URI));
     }
 
+    // this is new since 3.0.1
     @Override
-    public AbstractHtml render() {
+    protected void beforeRender() {
+        // Write BrowserPage configurations code here.
+        // The following code can also be written inside render() method but
+        // writing here will be a nice separation of concern.
         super.setWebSocketHeartbeatInterval(HEARTBEAT_TIME_MILLISECONDS);
         super.setWebSocketReconnectInterval(WS_RECONNECT_TIME);
+    }
 
+    @Override
+    public AbstractHtml render() {
         documentModel.setBrowserPage(this);
+        return new IndexPageLayout(documentModel);
+    }
 
-        indexPageLayout = new IndexPageLayout(documentModel);
-
-        mainDiv = TagRepository.findTagById("mainDivId", indexPageLayout);
-
+    // this is new since 3.0.1
+    @Override
+    protected void beforeToHtml(AbstractHtml rootTag) {
+        mainDiv = TagRepository.findTagById("mainDivId", rootTag);
         // to remove main div and to insert "Loading..." before rendering
         if (mainDiv != null) {
             mainDivChildren = mainDiv.getChildren();
             mainDiv.addInnerHtml(new NoTag(null, "Loading..."));
         }
-
-        return indexPageLayout;
     }
-    
+
+    // this is new since 3.0.1
     @Override
     protected void afterToHtml(AbstractHtml rootTag) {
         if (mainDiv != null && mainDivChildren != null) {
             mainDiv.addInnerHtmls(mainDivChildren
                     .toArray(new AbstractHtml[mainDivChildren.size()]));
+            mainDiv = null;
+            mainDivChildren = null;
         }
     }
-    
-// afterToHtml will be available for 
-// the same purpose since wffweb-3.0.1
+
+    // afterToHtml will
+    // be available for
+    // the same
+    // purpose since wffweb-3.0.1
 //    @Override
 //    public int toOutputStream(OutputStream os, String charset)
 //            throws IOException {
