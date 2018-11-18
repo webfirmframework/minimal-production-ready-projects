@@ -17,5 +17,5 @@ ___
 #### [https://foundation.zurb.com/building-blocks/](https://foundation.zurb.com/building-blocks/) 
 
 
-Gives best result on Google Chrome
+Got best result on Google Chrome when tested
 
