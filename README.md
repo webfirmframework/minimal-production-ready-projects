@@ -18,11 +18,18 @@ All projects are in maven.
 ___
 
 ### Sample HTML code for foundation css framework
-#### [https://foundation.zurb.com/building-blocks/](https://foundation.zurb.com/building-blocks/) 
+#### [https://foundation.zurb.com/building-blocks/](https://foundation.zurb.com/building-blocks/)
 
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-### Sample HTML code for MUI css framework
-#### [https://www.muicss.com/docs/v1/css-js/buttons/](https://www.muicss.com/docs/v1/css-js/buttons) 
+### Doc for MUI css framework
+#### [https://www.muicss.com/docs/v1/css-js/buttons/](https://www.muicss.com/docs/v1/css-js/buttons). 
+MUI follows Google's [Material Design](https://material.io/design/introduction/) guidelines. 
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+### Doc for Petal css framework
+#### [https://shakrmedia.github.io/petal/docs/basic.html](https://shakrmedia.github.io/petal/docs/basic.html) 
 
 ___
 
