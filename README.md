@@ -1,5 +1,9 @@
 # minimal-production-ready-projects
-Minimal production ready webfirmframework  projects. The sample projects in this repository use one of the css frameworks like bootstrap css, foundation css, material design lite css, materialize css, MUI css etc..
+This repository contains minimal production ready webfirmframework  projects. The sample projects in this repository use one of the css frameworks like bootstrap css, foundation css, material design lite css, materialize css, MUI css etc..
+
+___
+
+The project is based on wffweb-3.0.1-SNAPSHOT. You can replace this version with wffweb-3.0.1 once that version is released.
 
 ___
 
