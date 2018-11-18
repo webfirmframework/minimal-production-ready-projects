@@ -3,7 +3,7 @@ This repository contains minimal production ready webfirmframework  projects. Th
 
 ___
 
-The project is based on wffweb-3.0.1-SNAPSHOT. You can replace this version with wffweb-3.0.1 once that version is released.
+The projects are based on wffweb-3.0.1-SNAPSHOT. You can replace this version with wffweb-3.0.1 once that version is released.
 
 ___
 
