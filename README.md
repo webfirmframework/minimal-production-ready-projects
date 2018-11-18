@@ -1,5 +1,5 @@
 # minimal-production-ready-projects
-This repository contains minimal production ready webfirmframework  projects. The sample projects in this repository use one of the css frameworks like bootstrap css, foundation css, material design lite css, materialize css, MUI css etc..
+This repository contains minimal production ready webfirmframework  projects. The sample projects in this repository use one of the css frameworks like bootstrap css, foundation css, material design lite css, materialize css, MUI css, Petal css etc..
 
 ___
 
