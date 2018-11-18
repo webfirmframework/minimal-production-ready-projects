@@ -122,13 +122,13 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                 
                 new Br(this);
                 
-                new A(this, new Href("https://foundation.zurb.com/sites/docs/kitchen-sink.html"), 
+                new A(this, new Href("https://getbootstrap.com/"), 
                         new Target(Target.BLANK)) {{
-                    new NoTag(this, "visit foundation tutorial");
+                    new NoTag(this, "visit bootstrap4 tutorial");
                 }};
                 
                 new H1(this) {{
-                    new NoTag(this, "Sample with foundation css framework ");  
+                    new NoTag(this, "Sample with boostrap4 css framework ");  
                 }};
                 
                 new Button(this, new OnClick(IndexPageLayout.this), 

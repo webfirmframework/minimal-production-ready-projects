@@ -97,9 +97,9 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                 
                 new Br(this);
                 
-                new A(this, new Href("https://foundation.zurb.com/sites/docs/kitchen-sink.html"), 
+                new A(this, new Href("https://www.muicss.com"), 
                         new Target(Target.BLANK)) {{
-                    new NoTag(this, "visit foundation tutorial");
+                    new NoTag(this, "visit MUI tutorial");
                 }};
                 
                 new H1(this) {{
