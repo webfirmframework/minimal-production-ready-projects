@@ -17,7 +17,6 @@ import com.webfirmframework.wffweb.tag.html.attribute.Src;
 import com.webfirmframework.wffweb.tag.html.attribute.Target;
 import com.webfirmframework.wffweb.tag.html.attribute.event.ServerAsyncMethod;
 import com.webfirmframework.wffweb.tag.html.attribute.event.mouse.OnClick;
-import com.webfirmframework.wffweb.tag.html.attribute.global.ClassAttribute;
 import com.webfirmframework.wffweb.tag.html.attribute.global.Id;
 import com.webfirmframework.wffweb.tag.html.attributewff.CustomAttribute;
 import com.webfirmframework.wffweb.tag.html.formsandinputs.Button;
@@ -33,7 +32,6 @@ import com.webfirmframework.wffweb.tag.repository.TagRepository;
 import com.webfirmframework.wffweb.wffbm.data.BMValueType;
 import com.webfirmframework.wffweb.wffbm.data.WffBMObject;
 import com.wffwebdemo.minimalproductionsample.css.Bootstrap4CssClass;
-import com.wffwebdemo.minimalproductionsample.css.CustomCssClass;
 import com.wffwebdemo.minimalproductionsample.page.model.DocumentModel;
 import com.wffwebdemo.minimalproductionsample.page.template.SampleTemplate1;
 
@@ -61,7 +59,7 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
             final CustomAttribute crossOriginAnonymous = new CustomAttribute("crossorigin", "anonymous");
             
             new TitleTag(this) {{
-                new NoTag(this, "wffweb with foundation css example");
+                new NoTag(this, "wffweb with bootstrap4 css example");
             }};
             new Meta(this,
                 new Charset("utf-8"));

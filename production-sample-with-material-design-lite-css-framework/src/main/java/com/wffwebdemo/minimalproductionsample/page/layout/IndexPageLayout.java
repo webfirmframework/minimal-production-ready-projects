@@ -54,7 +54,7 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
         new Head(this) {{
             
             new TitleTag(this) {{
-                new NoTag(this, "wffweb with materialize css example");
+                new NoTag(this, "wffweb with material design lite css example");
             }};
             
             new Meta(this,
