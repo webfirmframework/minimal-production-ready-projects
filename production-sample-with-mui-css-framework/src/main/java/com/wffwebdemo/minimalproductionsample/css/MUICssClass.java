@@ -15,8 +15,7 @@ import static com.webfirmframework.wffweb.util.StringUtil.splitBySpace;
  * class names. It will also help us to know what are the classes available in
  * the whole project. <br>
  * <br>
- * It contains bootstrap4 classes but this is not complete. It may also contain
- * bootstrap3 classes so use it carefully. NB: update it with bootstrap4 doc.
+ * It contains MUI classes but this is not complete. NB: update it with MUI doc.
  * You can also merge from custom classes, Eg:
  * 
  * <pre>

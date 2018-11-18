@@ -103,7 +103,7 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                 }};
                 
                 new H1(this) {{
-                    new NoTag(this, "Sample with foundation css framework ");  
+                    new NoTag(this, "Sample with MUI css framework ");  
                 }};
                 
                 new Button(this, new OnClick(IndexPageLayout.this), 
