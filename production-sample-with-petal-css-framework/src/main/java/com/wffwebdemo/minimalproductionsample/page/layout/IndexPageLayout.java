@@ -167,7 +167,7 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
             TitleTag titleTag = tagRepository
                     .findOneTagAssignableToTag(TitleTag.class);
             titleTag.addInnerHtml(
-                    new NoTag(null, "Bootstrap Example | SampleTemplate1"));
+                    new NoTag(null, "Petal Example | SampleTemplate1"));
         }
 
         return null;
