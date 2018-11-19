@@ -53,6 +53,9 @@ public class IndexPage extends BrowserPage {
     @Override
     public AbstractHtml render() {
         documentModel.setBrowserPage(this);
+        // Here you can return layout template based on condition, Eg if the
+        // user is logged in then return DashboardPageLayout otherwise
+        // return LoginPageLayout
         return new IndexPageLayout(documentModel);
     }
 
