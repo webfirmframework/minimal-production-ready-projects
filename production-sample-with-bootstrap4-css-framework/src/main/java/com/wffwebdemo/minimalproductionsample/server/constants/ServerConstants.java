@@ -1,7 +1,13 @@
 package com.wffwebdemo.minimalproductionsample.server.constants;
 
 public final class ServerConstants {
-
+    
+    //TODO NB:
+    //as per https://tomcat.apache.org/tomcat-9.0-doc/web-socket-howto.html
+    //the default value of org.apache.tomcat.websocket.binaryBufferSize is 8192.
+    //But this may vary from server to server so refer corresponding documentation
+    public static  final  int WS_BINARY_BUFFER_SIZE = 8192;
+    
     public static final String DOMAIN_URL;
 
     public static final String DOMAIN_WS_URL;

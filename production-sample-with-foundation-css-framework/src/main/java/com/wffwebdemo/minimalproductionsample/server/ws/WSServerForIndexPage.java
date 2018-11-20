@@ -3,6 +3,7 @@ package com.wffwebdemo.minimalproductionsample.server.ws;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletRequestEvent;
@@ -26,6 +27,7 @@ import com.webfirmframework.wffweb.PushFailedException;
 import com.webfirmframework.wffweb.server.page.BrowserPage;
 import com.webfirmframework.wffweb.server.page.BrowserPageContext;
 import com.webfirmframework.wffweb.server.page.action.BrowserPageAction;
+import com.webfirmframework.wffweb.util.ByteBufferUtil;
 import com.wffwebdemo.minimalproductionsample.page.IndexPage;
 import com.wffwebdemo.minimalproductionsample.page.model.DocumentModel;
 import com.wffwebdemo.minimalproductionsample.server.constants.ServerConstants;
@@ -153,11 +155,23 @@ public class WSServerForIndexPage extends Configurator
         }
 
         browserPage.addWebSocketPushListener(session.getId(), data -> {
-            try {
-                session.getBasicRemote().sendBinary(data);
-            } catch (Throwable e) {
-                throw new PushFailedException(e.getMessage(), e);
-            }
+            ByteBufferUtil.sliceIfRequired(data, ServerConstants.WS_BINARY_BUFFER_SIZE, (part, last) -> {
+                try {
+                    session.getBasicRemote().sendBinary(part, last);
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE,
+                            "IOException while session.getBasicRemote().sendBinary(part, last)",
+                            e);
+                    try {
+                        session.close();
+                    } catch (IOException e1) {
+                        LOGGER.log(Level.SEVERE,
+                                "IOException while session.close()", e1);
+                    }
+                    throw new PushFailedException(e.getMessage(), e);
+                }
+                return !last;
+            });
         });
 
     }
