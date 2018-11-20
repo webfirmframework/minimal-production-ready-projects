@@ -154,10 +154,19 @@ public class WSServerForIndexPage extends Configurator
 
         }
 
+        // Internally it may contain a volatile variable
+        // so it's better to declare a dedicated variable before
+        // addWebSocketPushListener.
+        // If the maxBinaryMessageBufferSize is changed dynamically
+        // then call getMaxBinaryMessageBufferSize method directly in
+        // sliceIfRequired method as second argument.
+        final int maxBinaryMessageBufferSize = session
+                .getMaxBinaryMessageBufferSize();
+
         browserPage.addWebSocketPushListener(session.getId(), data -> {
 
-            ByteBufferUtil.sliceIfRequired(data,
-                    session.getMaxBinaryMessageBufferSize(), (part, last) -> {
+            ByteBufferUtil.sliceIfRequired(data, maxBinaryMessageBufferSize,
+                    (part, last) -> {
 
                         try {
                             session.getBasicRemote().sendBinary(part, last);
