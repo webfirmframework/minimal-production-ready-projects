@@ -155,23 +155,28 @@ public class WSServerForIndexPage extends Configurator
         }
 
         browserPage.addWebSocketPushListener(session.getId(), data -> {
-            ByteBufferUtil.sliceIfRequired(data, ServerConstants.WS_BINARY_BUFFER_SIZE, (part, last) -> {
-                try {
-                    session.getBasicRemote().sendBinary(part, last);
-                } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE,
-                            "IOException while session.getBasicRemote().sendBinary(part, last)",
-                            e);
-                    try {
-                        session.close();
-                    } catch (IOException e1) {
-                        LOGGER.log(Level.SEVERE,
-                                "IOException while session.close()", e1);
-                    }
-                    throw new PushFailedException(e.getMessage(), e);
-                }
-                return !last;
-            });
+
+            ByteBufferUtil.sliceIfRequired(data,
+                    session.getMaxBinaryMessageBufferSize(), (part, last) -> {
+
+                        try {
+                            session.getBasicRemote().sendBinary(part, last);
+                        } catch (IOException e) {
+                            LOGGER.log(Level.SEVERE,
+                                    "IOException while session.getBasicRemote().sendBinary(part, last)",
+                                    e);
+                            try {
+                                session.close();
+                            } catch (IOException e1) {
+                                LOGGER.log(Level.SEVERE,
+                                        "IOException while session.close()",
+                                        e1);
+                            }
+                            throw new PushFailedException(e.getMessage(), e);
+                        }
+
+                        return !last;
+                    });
         });
 
     }
