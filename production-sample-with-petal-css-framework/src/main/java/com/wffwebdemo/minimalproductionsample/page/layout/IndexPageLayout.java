@@ -90,7 +90,7 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                 
                 new Br(this);
                 
-                new A(this, new Href("https://webfirmframework.github.io/developers-guide/get-started.html"), 
+                new A(this, new Href("https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html"), 
                         new Target(Target.BLANK)) {{
                     new NoTag(this, "visit webfirmframework developers guide");
                 }};

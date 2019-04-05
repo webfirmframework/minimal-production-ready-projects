@@ -1,6 +1,7 @@
 package com.wffwebdemo.minimalproductionsample.server.ws;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,6 +27,7 @@ import javax.websocket.server.ServerEndpointConfig.Configurator;
 import com.webfirmframework.wffweb.PushFailedException;
 import com.webfirmframework.wffweb.server.page.BrowserPage;
 import com.webfirmframework.wffweb.server.page.BrowserPageContext;
+import com.webfirmframework.wffweb.server.page.PayloadProcessor;
 import com.webfirmframework.wffweb.server.page.action.BrowserPageAction;
 import com.webfirmframework.wffweb.util.ByteBufferUtil;
 import com.wffwebdemo.minimalproductionsample.page.IndexPage;
@@ -51,6 +53,8 @@ public class WSServerForIndexPage extends Configurator
     private HttpSession httpSession;
 
     private long lastHeartbeatTime;
+
+    private PayloadProcessor payloadProcessor;
 
     private static final long HTTP_SESSION_HEARTBEAT_INVTERVAL = ServerConstants.SESSION_TIMEOUT_MILLISECONDS
             - (1000 * 60 * 2);
@@ -162,6 +166,8 @@ public class WSServerForIndexPage extends Configurator
         // sliceIfRequired method as second argument.
         final int maxBinaryMessageBufferSize = session
                 .getMaxBinaryMessageBufferSize();
+        
+        payloadProcessor = browserPage.getNewPayloadProcessor();
 
         browserPage.addWebSocketPushListener(session.getId(), data -> {
 
@@ -196,11 +202,11 @@ public class WSServerForIndexPage extends Configurator
      * String.
      */
     @OnMessage
-    public void onMessage(byte[] message, Session session) {
+    public void onMessage(ByteBuffer message, boolean last, Session session) {
 
-        browserPage.webSocketMessaged(message);
+        payloadProcessor.webSocketMessaged(message, last);
 
-        if (message.length == 0) {
+        if (last && message.capacity() == 0) {
             LOGGER.info("client ping message.length == 0");
             if (httpSession != null
                     && HTTP_SESSION_HEARTBEAT_INVTERVAL < (System
@@ -257,6 +263,7 @@ public class WSServerForIndexPage extends Configurator
         String instanceId = wffInstanceIds.get(0);
         BrowserPageContext.INSTANCE.webSocketClosed(instanceId,
                 session.getId());
+        payloadProcessor = browserPage.getNewPayloadProcessor();
     }
 
     @OnError
