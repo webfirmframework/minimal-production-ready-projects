@@ -167,7 +167,7 @@ public class WSServerForIndexPage extends Configurator
         final int maxBinaryMessageBufferSize = session
                 .getMaxBinaryMessageBufferSize();
         
-        payloadProcessor = browserPage.getNewPayloadProcessor();
+        payloadProcessor = browserPage.getPayloadProcessor();
 
         browserPage.addWebSocketPushListener(session.getId(), data -> {
 
@@ -263,7 +263,8 @@ public class WSServerForIndexPage extends Configurator
         String instanceId = wffInstanceIds.get(0);
         BrowserPageContext.INSTANCE.webSocketClosed(instanceId,
                 session.getId());
-        payloadProcessor = browserPage.getNewPayloadProcessor();
+        payloadProcessor = null;
+        browserPage.removePayloadProcessor();
     }
 
     @OnError
