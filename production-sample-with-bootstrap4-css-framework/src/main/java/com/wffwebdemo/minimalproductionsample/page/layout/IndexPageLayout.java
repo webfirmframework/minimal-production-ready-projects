@@ -69,8 +69,8 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
             
             new Link(this,
                     new Rel("stylesheet"),
-                    new Href("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"),
-                    new CustomAttribute("integrity", "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"),
+                    new Href("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"),
+                    new CustomAttribute("integrity", "sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"),
                     crossOriginAnonymous);
             
             new Link(this,
@@ -79,26 +79,26 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
             
             
             new Script(this,
-                new Defer(),
-                new Src("https://code.jquery.com/jquery-3.2.1.slim.min.js"),
-                new CustomAttribute("integrity", "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"),
-                crossOriginAnonymous) {{
-                new NoTag(this, "");
+                    new Defer(),
+                    new Src("https://code.jquery.com/jquery-3.3.1.slim.min.js"),
+                    new CustomAttribute("integrity", "sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"),
+                    crossOriginAnonymous) {{
+                    new NoTag(this, "");
             }};
             
             new Script(this,
-                new Defer(),    
-                new Src("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"),
-                new CustomAttribute("integrity", "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"),
-                crossOriginAnonymous) {{
-                new NoTag(this, "");
+                    new Defer(),    
+                    new Src("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"),
+                    new CustomAttribute("integrity", "sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"),
+                    crossOriginAnonymous) {{
+                    new NoTag(this, "");
             }};
             
             new Script(this,
-                new Defer(),
-                new Src("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"),
-                new CustomAttribute("integrity", "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"),
-                crossOriginAnonymous);
+                    new Defer(),
+                    new Src("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"),
+                    new CustomAttribute("integrity", "sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"),
+                    crossOriginAnonymous);
                 
             
             new Script(this,
