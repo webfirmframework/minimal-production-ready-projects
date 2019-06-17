@@ -3,7 +3,7 @@ This repository contains minimal production ready webfirmframework  projects. Th
 
 ___
 
-The projects are based on *wffweb-3.0.1*. [Visit developers guide for webfirmframework doc](https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html).
+The projects are based on latest version of *wffweb-RELEASE*. [Visit developers guide for webfirmframework doc](https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html).
 
 ___
 
