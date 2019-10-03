@@ -53,18 +53,18 @@ public class ResponsiveTable extends Table {
         }
         
         //thead of table
-        THead tHead = new THead(this) {{
-            new Tr(this) {{
+        THead tHead = new THead(this).give(thead -> {
+            new Tr(thead).give(tr -> {
                 for (String headName : headNames) {
-                    new Th(this) {{
-                        new NoTag(this, headName);
-                    }};    
+                    new Th(tr).give(th -> {
+                        new NoTag(th, headName);
+                    });    
                 }               
-            }};
-        }};
+            });
+        });
         
         //tbody of table
-        new TBody(this) {{
+        new TBody(this).<TBody> give(tbody -> {
             
             //used thread to very slowly add rows to the table.
             //To prove other ui portions can be
@@ -79,7 +79,7 @@ public class ResponsiveTable extends Table {
                         break;
                     }
                     
-                    developTr(this, headNames, row);
+                    developTr(tbody, headNames, row);
                     
                     try {
                         //to make a delay of 1 second
@@ -91,34 +91,33 @@ public class ResponsiveTable extends Table {
             });
             thread.setDaemon(true);
             thread.start();
-        }};    
+        });    
         
     }
     
     private void developTr(TBody tBody, List<String> headNames, Collection<String> row) {
-        Tr tr = new Tr(this) {{
-            Tr thisTr = this;
+        Tr finalTr = new Tr(this) .give(tr -> {
             
             int i = 0;
             for (String cellValue : row) {
-                new Td(this,
-                        new DataAttribute("label", headNames.get(i))) {{
-                    new NoTag(this, cellValue);
-                }};
+                new Td(tr,
+                        new DataAttribute("label", headNames.get(i)))  .give(td -> {
+                    new NoTag(td, cellValue);
+                });
                 i++;
             }
-            new Td(this,
-                    new DataAttribute("label", "Action")) {{
-                new A(this, new ClassAttribute("clear button alert"), 
+            new Td(tr,
+                    new DataAttribute("label", "Action")) .give(td -> {
+                new A(td, new ClassAttribute("clear button alert"), 
                         new OnClick((bm, event) -> {
-                                thisTr.getParent().removeChild(thisTr);
+                            tr.getParent().removeChild(tr);
                                 return null;
-                            })) {{
-                    new NoTag(this, "delete");
-                }};
-            }};
-        }};
-        tBody.appendChildren(tr);
+                            })) .give(a -> {
+                    new NoTag(a, "delete");
+                });
+            });
+        });
+        tBody.appendChildren(finalTr);
     }
     // @formatter:on
 }

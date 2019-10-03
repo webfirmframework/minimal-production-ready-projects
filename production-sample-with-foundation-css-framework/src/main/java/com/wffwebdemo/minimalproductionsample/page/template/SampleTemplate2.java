@@ -33,33 +33,35 @@ public class SampleTemplate2 extends Div implements ServerAsyncMethod {
 
     private void develop() {
         changeTitle();
-        
-        new H3(this) {{
+
+        new H3(this).give(h -> {
             new NoTag(this, "SampleTemplate2.java");
-        }};
-        new Form(this,
-            new OnSubmit("event.preventDefault(); return true;", 
-                this, 
-                "return {name:fullname.value};", 
-                "console.log(jsObject.msg); alert('The full name is printed in server console');")) {{
-            
-            new Div(this,
-                new ClassAttribute("large-4 medium-4 cell")) {{
-                new Label(this) {{
-                    new NoTag(this, "Full Name");
-                }};
-                new Input(this,
-                    new Name("fullname"),
-                    new Type(Type.TEXT),
-                    new Required(),
-                    new Placeholder("Your Full Name"));
-            }};
-            new Button(this,
-                new Type(Type.SUBMIT),
-                new ClassAttribute("success button")) {{
-                new NoTag(this, "Submit");
-            }};
-        }};
+        });
+        new Form(this, new OnSubmit("event.preventDefault(); return true;",
+                this, "return {name:fullname.value};",
+                "console.log(jsObject.msg); alert('The full name is printed in server console');"))
+                        .give(form -> {
+
+                            new Div(form,
+                                    new ClassAttribute("large-4 medium-4 cell"))
+                                            .give(div -> {
+                                                new Label(div).give(label -> {
+                                                    new NoTag(label,
+                                                            "Full Name");
+                                                });
+                                                new Input(div,
+                                                        new Name("fullname"),
+                                                        new Type(Type.TEXT),
+                                                        new Required(),
+                                                        new Placeholder(
+                                                                "Your Full Name"));
+                                            });
+                            new Button(form, new Type(Type.SUBMIT),
+                                    new ClassAttribute("success button"))
+                                            .give(btn -> {
+                                                new NoTag(btn, "Submit");
+                                            });
+                        });
     }
     
     private void changeTitle() {

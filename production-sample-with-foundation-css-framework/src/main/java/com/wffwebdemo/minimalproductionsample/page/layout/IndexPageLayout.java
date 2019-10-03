@@ -55,83 +55,83 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
     // @formatter:off
     private void develop() {
 
-        new Head(this) {{
-            new TitleTag(this) {{
+        new Head(this).give(head -> {
+            new TitleTag(head) {{
                 new NoTag(this, "wffweb with foundation css example");
             }};
-            new Meta(this,
+            new Meta(head,
                 new Charset("utf-8"));
-            new Meta(this,
+            new Meta(head,
                 new Name("viewport"),
                 new Content("width=device-width, initial-scale=1"));
             
-            new Link(this,
+            new Link(head,
                     new Rel(Rel.STYLESHEET),
                     new Href("assets/css/foundation.min.css"));
-            new Link(this,
+            new Link(head,
                     new Rel(Rel.STYLESHEET),
                     new Href("assets/css/app.css"));
 
-            new Script(this,
+            new Script(head,
                 new Src("https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"));
             
-            new Script(this,
+            new Script(head,
                     new Defer(),
                     new Src("assets/js/vendor/what-input.js"));
             
-            new Script(this,
+            new Script(head,
                     new Defer(),
                     new Src("assets/js/vendor/foundation.min.js"));
             
-            new Script(this,
+            new Script(head,
                     new Defer(),
                     new Src("assets/js/app.js"));
             
-        }};
+        });
         
-        new Body(this) {{
+        new Body(this).give(body -> {
             
-            new Div(this, new Id("mainDivId")) {{
+            new Div(body, new Id("mainDivId")) .give(div -> {
                 
-                new NoTag(this, "session id " + documentModel.getHttpSession().getId());
+                new NoTag(div, "session id " + documentModel.getHttpSession().getId());
                 
-                new Br(this);
+                new Br(div);
                 
-                new A(this, new Href("https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html"), 
-                        new Target(Target.BLANK)) {{
-                    new NoTag(this, "visit webfirmframework developers guide");
-                }};
+                new A(div, new Href("https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html"), 
+                        new Target(Target.BLANK)) .give(a -> {
+                    new NoTag(a, "visit webfirmframework developers guide");
+                });
                 
-                new Br(this);
+                new Br(div);
                 
-                new A(this, new Href("https://foundation.zurb.com/sites/docs/kitchen-sink.html"), 
-                        new Target(Target.BLANK)) {{
-                    new NoTag(this, "visit foundation tutorial");
-                }};
+                new A(div, new Href("https://foundation.zurb.com/sites/docs/kitchen-sink.html"), 
+                        new Target(Target.BLANK)).give(a -> {
+                    new NoTag(a, "visit foundation tutorial");
+                });
                 
-                new H1(this) {{
-                    new NoTag(this, "Sample with foundation css framework ");  
-                }};
+                new H1(div).give(h -> {
+                    new NoTag(h, "Sample with foundation css framework ");  
+                });
                 
-                new H5(this) {{
-                    new NoTag(this, "I'm a responsive table in foundation css, "
+                new H5(div).give(h -> {
+                    new NoTag(h, "I'm a responsive table in foundation css, "
                             + "resize the browser and check. "
                             + "Each row is added with a 1 second delay and "
                             + "Thread is used to add rows asynchronously. "
                             + "You can also click on Insert SampleTemplate1 button to check it.");  
-                }};
+                });
                 
                 //responsive table
-                new ResponsiveTable(this, documentModel);               
+                new ResponsiveTable(div, documentModel);               
                 
                 
-                new Button(this, new OnClick(IndexPageLayout.this), 
-                        new ClassAttribute("button")) {{
-                    new NoTag(this, "Insert SampleTemplate1");
-                }};
+                new Button(div, new OnClick(IndexPageLayout.this), 
+                        new ClassAttribute("button")).give(btn -> {
+                    new NoTag(btn, "Insert SampleTemplate1");
+                });
                 
                 
-                new Button(this,
+                new Button(div,
                         new ClassAttribute("alert button"),
                         new OnClick("return confirm('Do you want to send some data to server to print in server console?');", 
                         (data, event) -> {
@@ -150,16 +150,16 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                             return resultData;
                             },
                         "return {val: 'this is from client'};", 
-                        "if (jsObject && jsObject.msg) {alert(jsObject.msg);}")) {{
-                    new NoTag(this, "Send data to server");
-                }};
+                        "if (jsObject && jsObject.msg) {alert(jsObject.msg);}")).give(btn -> {
+                    new NoTag(btn, "Send data to server");
+                });
                 
                 
-                new Br(this);
-                new Br(this);
-            }};
+                new Br(div);
+                new Br(div);
+            });
             
-        }};
+        });
         
     }
     // @formatter:on
@@ -182,8 +182,8 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
             mainDiv.appendChild(new SampleTemplate1(documentModel));
             TitleTag titleTag = tagRepository
                     .findOneTagAssignableToTag(TitleTag.class);
-            titleTag.addInnerHtml(
-                    new NoTag(null, "Foundation CSS Example | SampleTemplate1"));
+            titleTag.addInnerHtml(new NoTag(null,
+                    "Foundation CSS Example | SampleTemplate1"));
         }
 
         return null;

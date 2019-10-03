@@ -32,48 +32,55 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
 
     private void develop() {
         changeTitle();
-        
-        
-        new Div(this,
-            new ClassAttribute("grid-x grid-padding-x")) {{
-            new Div(this,
-                new ClassAttribute("large-12 cell")) {{
-                new H3(this) {{
-                    new NoTag(this, "SampleTemplate1.java");
-                }};
-            }};
-        }};
-        
-        
-        new Form(this, new OnSubmit("event.preventDefault(); return true;", this, null, null)) {{
-            new Div(this,
-                new ClassAttribute("grid-x grid-padding-x")) {{
-                new Div(this,
-                    new ClassAttribute("large-12 cell")) {{
-                    new Label(this) {{
-                        new NoTag(this, "Input Label");
-                    }};
-                    new Input(this,
-                        new Type(Type.TEXT),
-                        new Placeholder("large-12.cell"));
-                }};
-            }};
-        }};
-        
-        
-        
+
+        new Div(this, new ClassAttribute("grid-x grid-padding-x")).give(div -> {
+            new Div(div, new ClassAttribute("large-12 cell")).give(div1 -> {
+                new H3(div1).give(h -> {
+                    new NoTag(h, "SampleTemplate1.java");
+                });
+            });
+        });
+
+        new Form(this, new OnSubmit("event.preventDefault(); return true;",
+                this, null, null)).give(form -> {
+                    
+                    new Div(form, new ClassAttribute("grid-x grid-padding-x"))
+                            .give(div -> {
+                                
+                                new Div(div,
+                                        new ClassAttribute("large-12 cell"))
+                                                .give(div1 -> {
+                                                    
+                                                    new Label(div1)
+                                                            .give(label -> {
+                                                                
+                                                                new NoTag(label,
+                                                                        "Input Label");
+                                                            });
+                                                    
+                                                    new Input(div1,
+                                                            new Type(Type.TEXT),
+                                                            new Placeholder(
+                                                                    "large-12.cell"));
+                                                });
+                            });
+                });
+
         new Br(this);
-        
-        new Button(this, new OnClick(SampleTemplate1.this), new ClassAttribute("secondary button")) {{
-            new NoTag(this, "Click Me to change to SampleTemplate2");
-        }};
+
+        new Button(this, new OnClick(SampleTemplate1.this),
+                new ClassAttribute("secondary button")).give(btn -> {
+                    new NoTag(btn, "Click Me to change to SampleTemplate2");
+                });
         new Br(this);
         new Br(this);
     }
-    
+
     private void changeTitle() {
-        // getTagRepository() will give object only if the browserPage.render is returned
-        TagRepository tagRepository = documentModel.getBrowserPage().getTagRepository();
+        // getTagRepository() will give object only if the browserPage.render is
+        // returned
+        TagRepository tagRepository = documentModel.getBrowserPage()
+                .getTagRepository();
         if (tagRepository != null) {
             AbstractHtml title = tagRepository.findTagById("windowTitleId");
             if (title != null) {
@@ -84,10 +91,10 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
 
     @Override
     public WffBMObject asyncMethod(WffBMObject wffBMObject, Event event) {
-        
+
         this.insertBefore(new SampleTemplate2(documentModel));
         this.getParent().removeChild(this);
-        
+
         return null;
     }
 }
