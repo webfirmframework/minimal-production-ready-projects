@@ -37,36 +37,36 @@ public class SampleTemplate2 extends Div implements ServerAsyncMethod {
     private void develop() {
         changeTitle();
         
-        new H3(this) {{
-            new NoTag(this, "SampleTemplate2.java");
-        }};
+        new H3(this) .give(h -> {
+            new NoTag(h, "SampleTemplate2.java");
+        });
         new Form(this,
             new OnSubmit("event.preventDefault(); return true;", 
                 this, 
                 "return {name:fullname.value};", 
-                "console.log(jsObject.msg); alert('The full name is printed in server console');")) {{
+                "console.log(jsObject.msg); alert('The full name is printed in server console');")) .give(form -> {
             
-            new Div(this,
-                    Bootstrap4CssClass.FORM_GROUP.getAttribute()) {{
+            new Div(form,
+                    Bootstrap4CssClass.FORM_GROUP.getAttribute()) .give(div -> {
                     
-                    new Label(this, new For("fullnameId")) {{
-                        new NoTag(this, "Full Name");
-                    }};
-                    new Input(this,
+                    new Label(div, new For("fullnameId")).give(label -> {
+                        new NoTag(label, "Full Name");
+                    });
+                    new Input(div,
                             Bootstrap4CssClass.FORM_CONTROL.getAttribute(),
                         new Id("fullnameId"),
                         new Name("fullname"),
                         new Type(Type.TEXT),
                         new Required(),
                         new Placeholder("Your Full Name"));
-            }};
+            });
             
-            new Button(this,
+            new Button(form,
                 new Type(Type.SUBMIT),
-                Bootstrap4CssClass.BTN_PRIMARY.getAttribute()) {{
-                new NoTag(this, "Submit");
-            }};
-        }};
+                Bootstrap4CssClass.BTN_PRIMARY.getAttribute()) .give(btn -> {
+                new NoTag(btn, "Submit");
+            });
+        });
     }
  // @formatter:on
 

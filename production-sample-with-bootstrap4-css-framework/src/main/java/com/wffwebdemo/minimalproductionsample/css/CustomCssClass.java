@@ -37,6 +37,7 @@ public enum CustomCssClass implements CssClass {
         this.classNames = splitBySpace(classNames);
     }
 
+    @Override
     public String[] getClassNames() {
         return classNames;
     }

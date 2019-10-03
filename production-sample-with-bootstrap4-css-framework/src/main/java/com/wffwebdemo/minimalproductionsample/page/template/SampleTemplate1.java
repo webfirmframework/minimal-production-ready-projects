@@ -34,35 +34,36 @@ public class SampleTemplate1 extends Div implements ServerAsyncMethod {
 
  // @formatter:off
     private void develop() {
+        
         changeTitle();
         
         
-        new H3(this) {{
-            new NoTag(this, "SampleTemplate1.java");
-        }};
+        new H3(this).give(h -> {
+            new NoTag(h, "SampleTemplate1.java");
+        });
         
         
-        new Form(this, new OnSubmit("event.preventDefault(); return true;", this, null, null)) {{
-            new Div(this,
-                Bootstrap4CssClass.FORM_GROUP.getAttribute()) {{
-                    new Label(this, new For("inputId")) {{
-                        new NoTag(this, "Email Input");
-                    }};
-                    new Input(this,
+        new Form(this, new OnSubmit("event.preventDefault(); return true;", this, null, null)).give(form -> {
+            new Div(form,
+                Bootstrap4CssClass.FORM_GROUP.getAttribute()).give(div -> {
+                    new Label(div, new For("inputId")).give(label -> {
+                        new NoTag(label, "Email Input");
+                    });
+                    new Input(div,
                         new Id("inputId"),    
                         new Type(Type.EMAIL),
                         Bootstrap4CssClass.FORM_CONTROL.getAttribute(),
                         new Placeholder("Eg: tech-support@webfirmframework.com"));
-            }};
-        }};
+            });
+        });
         
         
         
         new Br(this);
         
-        new Button(this, new OnClick(SampleTemplate1.this), Bootstrap4CssClass.BTN_SECONDARY.getAttribute()) {{
-            new NoTag(this, "Click Me to change to SampleTemplate2");
-        }};
+        new Button(this, new OnClick(SampleTemplate1.this), Bootstrap4CssClass.BTN_SECONDARY.getAttribute()).give(btn -> {
+            new NoTag(btn, "Click Me to change to SampleTemplate2");
+        });
         new Br(this);
         new Br(this);
     }

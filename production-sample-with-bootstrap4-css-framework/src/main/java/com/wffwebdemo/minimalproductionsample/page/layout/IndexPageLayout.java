@@ -54,89 +54,87 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
  // @formatter:off
     private void develop() {
 
-        new Head(this) {{
+        new Head(this).give(h -> {
             
             final CustomAttribute crossOriginAnonymous = new CustomAttribute("crossorigin", "anonymous");
             
-            new TitleTag(this) {{
-                new NoTag(this, "wffweb with bootstrap4 css example");
-            }};
-            new Meta(this,
+            new TitleTag(h).give(title -> {
+                new NoTag(title, "wffweb with bootstrap4 css example");
+            });
+            
+            new Meta(h,
                 new Charset("utf-8"));
-            new Meta(this,
+            
+            new Meta(h,
                 new Name("viewport"),
                 new Content("width=device-width, initial-scale=1"));
             
-            new Link(this,
+            new Link(h,
                     new Rel("stylesheet"),
                     new Href("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"),
                     new CustomAttribute("integrity", "sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"),
                     crossOriginAnonymous);
             
-            new Link(this,
+            new Link(h,
                     new Rel(Rel.STYLESHEET),
                     new Href("assets/css/app.css"));
             
             
-            new Script(this,
+            new Script(h,
                     new Defer(),
                     new Src("https://code.jquery.com/jquery-3.3.1.slim.min.js"),
                     new CustomAttribute("integrity", "sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"),
-                    crossOriginAnonymous) {{
-                    new NoTag(this, "");
-            }};
+                    crossOriginAnonymous);
             
-            new Script(this,
+            new Script(h,
                     new Defer(),    
                     new Src("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"),
                     new CustomAttribute("integrity", "sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"),
-                    crossOriginAnonymous) {{
-                    new NoTag(this, "");
-            }};
+                    crossOriginAnonymous);
             
-            new Script(this,
+            new Script(h,
                     new Defer(),
                     new Src("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"),
                     new CustomAttribute("integrity", "sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"),
                     crossOriginAnonymous);
                 
             
-            new Script(this,
+            new Script(h,
                     new Defer(),
                     new Src("assets/js/app.js"));
             
-        }};
+        });
         
-        new Body(this) {{
+        new Body(this).give(body -> {
             
-            new Div(this, new Id("mainDivId")) {{
+            new Div(body, new Id("mainDivId")).give(div -> {
                 
-                new NoTag(this, "session id " + documentModel.getHttpSession().getId());
+                new NoTag(div, "session id " + documentModel.getHttpSession().getId());
                 
-                new Br(this);
+                new Br(div);
                 
-                new A(this, new Href("https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html"), 
-                        new Target(Target.BLANK)) {{
-                    new NoTag(this, "visit webfirmframework developers guide");
-                }};
+                new A(div, new Href("https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html"), 
+                        new Target(Target.BLANK)).give(a -> {
+                    new NoTag(a, "visit webfirmframework developers guide");
+                });
                 
-                new Br(this);
+                new Br(div);
                 
-                new A(this, new Href("https://getbootstrap.com/"), 
-                        new Target(Target.BLANK)) {{
-                    new NoTag(this, "visit bootstrap4 tutorial");
-                }};
+                new A(div, new Href("https://getbootstrap.com/"), 
+                        new Target(Target.BLANK)).give(a -> {
+                    new NoTag(a, "visit bootstrap4 tutorial");
+                });
                 
-                new H1(this) {{
-                    new NoTag(this, "Sample with boostrap4 css framework ");  
-                }};
+                new H1(div).give(h -> {
+                    new NoTag(h, "Sample with boostrap4 css framework ");  
+                });
                 
-                new Button(this, new OnClick(IndexPageLayout.this), 
-                        Bootstrap4CssClass.BTN_SUCCESS.getAttribute()) {{
-                    new NoTag(this, "Insert SampleTemplate1");
-                }};
+                new Button(div, new OnClick(IndexPageLayout.this), 
+                        Bootstrap4CssClass.BTN_SUCCESS.getAttribute()).give(btn -> {
+                    new NoTag(btn, "Insert SampleTemplate1");
+                });
                 
-                new Button(this,
+                new Button(div,
                         Bootstrap4CssClass.BTN_DANGER_SM.getAttribute(),
                         new OnClick("return confirm('Do you want to send some data to server to print in server console?');", 
                         (data, event) -> {
@@ -155,26 +153,23 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
                             return resultData;
                             },
                         "return {val: 'this is from client'};", 
-                        "if (jsObject && jsObject.msg) {alert(jsObject.msg);}")) {{
-                    new NoTag(this, "Send data to server");
-                }};
+                        "if (jsObject && jsObject.msg) {alert(jsObject.msg);}")).give(btn -> {
+                    new NoTag(btn, "Send data to server");
+                });
                 
                 
-                new Br(this);
-                new Br(this);
+                new Br(div);
+                new Br(div);
                 
-                
-            }};
+            });
             
-        }};
+        });
         
     }
  // @formatter:on
 
     @Override
     public WffBMObject asyncMethod(WffBMObject wffBMObject, Event event) {
-        
-        
 
         TagRepository tagRepository = documentModel.getBrowserPage()
                 .getTagRepository();
