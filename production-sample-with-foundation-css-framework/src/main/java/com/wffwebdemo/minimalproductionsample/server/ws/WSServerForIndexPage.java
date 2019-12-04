@@ -266,7 +266,6 @@ public class WSServerForIndexPage extends Configurator
         BrowserPageContext.INSTANCE.webSocketClosed(instanceId,
                 session.getId());
         payloadProcessor = null;
-        browserPage.removePayloadProcessor();
     }
 
     @OnError
