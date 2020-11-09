@@ -27,13 +27,14 @@ import javax.websocket.server.ServerEndpointConfig.Configurator;
 import com.webfirmframework.wffweb.PushFailedException;
 import com.webfirmframework.wffweb.server.page.BrowserPage;
 import com.webfirmframework.wffweb.server.page.BrowserPageContext;
+import com.webfirmframework.wffweb.server.page.HeartbeatManager;
 import com.webfirmframework.wffweb.server.page.PayloadProcessor;
 import com.webfirmframework.wffweb.server.page.action.BrowserPageAction;
 import com.webfirmframework.wffweb.util.ByteBufferUtil;
+import com.wffwebdemo.minimalproductionsample.AppSettings;
 import com.wffwebdemo.minimalproductionsample.page.IndexPage;
 import com.wffwebdemo.minimalproductionsample.page.model.DocumentModel;
 import com.wffwebdemo.minimalproductionsample.server.constants.ServerConstants;
-import com.wffwebdemo.minimalproductionsample.server.util.HeartBeatUtil;
 
 /**
  * @ServerEndpoint gives the relative name for the end point This will be
@@ -52,12 +53,12 @@ public class WSServerForIndexPage extends Configurator
 
     private HttpSession httpSession;
 
-    private long lastHeartbeatTime;
-
     private PayloadProcessor payloadProcessor;
 
-    private static final long HTTP_SESSION_HEARTBEAT_INVTERVAL = ServerConstants.SESSION_TIMEOUT_MILLISECONDS
+    private static final long HTTP_SESSION_HEARTBEAT_INTERVAL = ServerConstants.SESSION_TIMEOUT_MILLISECONDS
             - (1000 * 60 * 2);
+    
+    private volatile HeartbeatManager heartbeatManager;
 
     @Override
     public void modifyHandshake(ServerEndpointConfig config,
@@ -134,7 +135,12 @@ public class WSServerForIndexPage extends Configurator
             // never to close the session on inactivity
             httpSession.setMaxInactiveInterval(-1);
             LOGGER.info("httpSession.setMaxInactiveInterval(-1)");
-            HeartBeatUtil.ping(httpSession.getId());
+            
+            final HeartbeatManager hbm = HeartbeatRunnable.HEARTBEAT_MANAGER_MAP.computeIfAbsent(httpSession.getId(),
+                    k -> new HeartbeatManager(AppSettings.CACHED_THREAD_POOL,
+                            HTTP_SESSION_HEARTBEAT_INTERVAL, new HeartbeatRunnable(httpSession.getId())));
+            heartbeatManager = hbm;
+            hbm.runAsync();
         }
 
         List<String> wffInstanceIds = session.getRequestParameterMap()
@@ -210,12 +216,12 @@ public class WSServerForIndexPage extends Configurator
 
         if (last && message.capacity() == 0) {
             LOGGER.info("client ping message.length == 0");
-            if (httpSession != null
-                    && HTTP_SESSION_HEARTBEAT_INVTERVAL < (System
-                            .currentTimeMillis() - lastHeartbeatTime)) {
+            if (httpSession != null) {
                 LOGGER.info("going to start httpsession hearbeat");
-                HeartBeatUtil.ping(httpSession.getId());
-                lastHeartbeatTime = System.currentTimeMillis();
+                HeartbeatManager hbm = heartbeatManager;
+                if (hbm != null) {
+                    hbm.runAsync();
+                }
             }
         }
     }
@@ -252,7 +258,10 @@ public class WSServerForIndexPage extends Configurator
             if (totalConnections == 0) {
                 httpSession.setMaxInactiveInterval(
                         ServerConstants.SESSION_TIMEOUT_SECONDS);
-                HeartBeatUtil.ping(httpSession.getId());
+                HeartbeatManager hbm = heartbeatManager;
+                if (hbm != null) {
+                    hbm.runAsync();
+                }
             }
 
             LOGGER.info("httpSession.setMaxInactiveInterval(60 * 30)");
