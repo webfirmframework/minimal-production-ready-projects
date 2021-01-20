@@ -29,6 +29,7 @@ import com.webfirmframework.wffweb.server.page.BrowserPage;
 import com.webfirmframework.wffweb.server.page.BrowserPageContext;
 import com.webfirmframework.wffweb.server.page.HeartbeatManager;
 import com.webfirmframework.wffweb.server.page.PayloadProcessor;
+import com.webfirmframework.wffweb.server.page.WebSocketOpenedRecord;
 import com.webfirmframework.wffweb.server.page.action.BrowserPageAction;
 import com.webfirmframework.wffweb.util.ByteBufferUtil;
 import com.wffwebdemo.minimalproductionsample.AppSettings;
@@ -136,11 +137,6 @@ public class WSServerForIndexPage extends Configurator
             httpSession.setMaxInactiveInterval(-1);
             LOGGER.info("httpSession.setMaxInactiveInterval(-1)");
             
-            final HeartbeatManager hbm = HeartbeatRunnable.HEARTBEAT_MANAGER_MAP.computeIfAbsent(httpSession.getId(),
-                    k -> new HeartbeatManager(AppSettings.CACHED_THREAD_POOL,
-                            HTTP_SESSION_HEARTBEAT_INTERVAL, new HeartbeatRunnable(httpSession.getId())));
-            heartbeatManager = hbm;
-            hbm.runAsync();
         }
 
         List<String> wffInstanceIds = session.getRequestParameterMap()
@@ -148,7 +144,19 @@ public class WSServerForIndexPage extends Configurator
 
         String instanceId = wffInstanceIds.get(0);
 
-        browserPage = BrowserPageContext.INSTANCE.webSocketOpened(instanceId);
+        final WebSocketOpenedRecord webSocketOpenedRecord = BrowserPageContext.INSTANCE.webSocketOpened(instanceId,
+                k -> new HeartbeatManager(AppSettings.CACHED_THREAD_POOL,
+                        HTTP_SESSION_HEARTBEAT_INTERVAL, new HeartbeatRunnable(k)));
+        HeartbeatManager hbm = null;
+        if (webSocketOpenedRecord != null) {
+            browserPage = webSocketOpenedRecord.browserPage();
+            hbm = webSocketOpenedRecord.heartbeatManager();
+        }
+        heartbeatManager = hbm;
+        //NB: if the server restarted the hbm could be null as the modifyHandshake may not be invoked.
+        if (hbm != null) {
+            hbm.runAsync();
+        }
 
         if (browserPage == null) {
 
@@ -216,12 +224,10 @@ public class WSServerForIndexPage extends Configurator
 
         if (last && message.capacity() == 0) {
             LOGGER.info("client ping message.length == 0");
-            if (httpSession != null) {
-                LOGGER.info("going to start httpsession hearbeat");
-                HeartbeatManager hbm = heartbeatManager;
-                if (hbm != null) {
-                    hbm.runAsync();
-                }
+            HeartbeatManager hbm = heartbeatManager;
+            if (hbm != null) {
+            	LOGGER.info("going to start httpsession hearbeat");
+                hbm.runAsync();
             }
         }
     }

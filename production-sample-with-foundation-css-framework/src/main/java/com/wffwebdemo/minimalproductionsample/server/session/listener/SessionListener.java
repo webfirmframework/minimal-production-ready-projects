@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSessionListener;
 
 import com.webfirmframework.wffweb.server.page.BrowserPageContext;
 import com.wffwebdemo.minimalproductionsample.page.IndexPage;
-import com.wffwebdemo.minimalproductionsample.server.ws.HeartbeatRunnable;
 
 @WebListener
 public class SessionListener implements HttpSessionListener {
@@ -39,8 +38,6 @@ public class SessionListener implements HttpSessionListener {
         }
 
         BrowserPageContext.INSTANCE.httpSessionClosed(session.getId());
-        
-        HeartbeatRunnable.HEARTBEAT_MANAGER_MAP.remove(session.getId());
     }
 
 }
