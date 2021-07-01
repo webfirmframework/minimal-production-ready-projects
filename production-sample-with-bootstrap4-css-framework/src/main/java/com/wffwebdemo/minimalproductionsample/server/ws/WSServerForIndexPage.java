@@ -285,13 +285,11 @@ public class WSServerForIndexPage extends Configurator
 
     @OnError
     public void onError(Session session, Throwable throwable) {
-        
         // NOP
         // log only if required
         // if (LOGGER.isLoggable(Level.WARNING)) {
         // LOGGER.log(Level.WARNING, throwable.getMessage());
         // }
-        
     }
 
     @Override
