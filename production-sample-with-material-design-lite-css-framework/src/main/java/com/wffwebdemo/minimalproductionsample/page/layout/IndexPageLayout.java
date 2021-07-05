@@ -40,6 +40,8 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
     private static final Logger LOGGER = Logger.getLogger(IndexPageLayout.class.getName());
 
     private DocumentModel documentModel;
+    
+    private Div mainDiv;
 
     public IndexPageLayout(DocumentModel documentModel) {
         super(null);
@@ -86,67 +88,71 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
             
         }};
         
-        new Body(this) {{
+        new Body(this).give(body -> {
             
-            new Div(this, new Id("mainDivId")) {{
-                
-                new NoTag(this, "session id " + documentModel.getHttpSession().getId());
-                
-                new Br(this);
-                
-                new A(this, new Href("https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html"), 
-                        new Target(Target.BLANK)) {{
-                    new NoTag(this, "visit webfirmframework developers guide");
-                }};
-                
-                new Br(this);
-                
-                new A(this, new Href("https://getmdl.io"), 
-                        new Target(Target.BLANK)) {{
-                    new NoTag(this, "visit material lite tutorial");
-                }};
-                
-                new H1(this) {{
-                    new NoTag(this, "Sample with material lite css framework ");  
-                }};
-                
-                new Button(this, new OnClick(IndexPageLayout.this), 
-                        new ClassAttribute("mdl-button mdl-js-button mdl-button--raised mdl-button--colored")) {{
-                    new NoTag(this, "Insert SampleTemplate1");
-                }};
-                
-                new Button(this,
-                        new ClassAttribute("mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"),
-                        new OnClick("return confirm('Do you want to send some data to server to print in server console?');", 
-                        (data, event) -> {
-                            String value = (String) data.getValue("val");
-                            
-                            System.out.println("value: " + value);
-                            
-                            WffBMObject resultData = new WffBMObject();
-                            
-                            resultData.put("msg", 
-                                    BMValueType.STRING, 
-                                    "This is a message received from server!");
-                            
-                            documentModel.getBrowserPage().getTagRepository().findTitleTag().addInnerHtml(new NoTag(null, "Some other title"));
-                            
-                            return resultData;
-                            },
-                        "return {val: 'this is from client'};", 
-                        "if (jsObject && jsObject.msg) {alert(jsObject.msg);}")) {{
-                    new NoTag(this, "Send data to server");
-                }};
-                
-                
-                new Br(this);
-                new Br(this);
-                
-                
-            }};
+            mainDiv = new Div(body, new Id("mainDivId")) .give(div -> {
+                new NoTag(div, "Loading...");
+            });
             
+        });
+        
+    }
+    
+    public void buildMainDivTags() {
+        Div div = mainDiv;
+        div.removeAllChildren();
+        
+        new NoTag(div, "session id " + documentModel.getHttpSession().getId());
+        
+        new Br(div);
+        
+        new A(div, new Href("https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html"), 
+                new Target(Target.BLANK)) {{
+            new NoTag(this, "visit webfirmframework developers guide");
         }};
         
+        new Br(div);
+        
+        new A(div, new Href("https://getmdl.io"), 
+                new Target(Target.BLANK)) {{
+            new NoTag(this, "visit material lite tutorial");
+        }};
+        
+        new H1(div) {{
+            new NoTag(this, "Sample with material lite css framework ");  
+        }};
+        
+        new Button(div, new OnClick(IndexPageLayout.this), 
+                new ClassAttribute("mdl-button mdl-js-button mdl-button--raised mdl-button--colored")) {{
+            new NoTag(this, "Insert SampleTemplate1");
+        }};
+        
+        new Button(div,
+                new ClassAttribute("mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"),
+                new OnClick("return confirm('Do you want to send some data to server to print in server console?');", 
+                (data, event) -> {
+                    String value = (String) data.getValue("val");
+                    
+                    System.out.println("value: " + value);
+                    
+                    WffBMObject resultData = new WffBMObject();
+                    
+                    resultData.put("msg", 
+                            BMValueType.STRING, 
+                            "This is a message received from server!");
+                    
+                    documentModel.getBrowserPage().getTagRepository().findTitleTag().addInnerHtml(new NoTag(null, "Some other title"));
+                    
+                    return resultData;
+                    },
+                "return {val: 'this is from client'};", 
+                "if (jsObject && jsObject.msg) {alert(jsObject.msg);}")) {{
+            new NoTag(this, "Send data to server");
+        }};
+        
+        
+        new Br(div);
+        new Br(div);
     }
 
     @Override

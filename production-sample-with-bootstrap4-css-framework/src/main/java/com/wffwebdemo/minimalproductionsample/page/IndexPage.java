@@ -60,24 +60,6 @@ public class IndexPage extends BrowserPage {
         layout.buildMainDivTags();
     }
 
-    // afterToHtml will
-    // be available for
-    // the same
-    // purpose since wffweb-3.0.1
-    // @Override
-    // public int toOutputStream(OutputStream os, String charset)
-    // throws IOException {
-    // System.out.println("toOutputStream");
-    // int outputStream = super.toOutputStream(os, charset);
-    // // to restore main div in the body
-    // // this makes the main div to be inserted via websocket communication
-    // if (mainDiv != null && mainDivChildren != null) {
-    // mainDiv.addInnerHtmls(mainDivChildren
-    // .toArray(new AbstractHtml[mainDivChildren.size()]));
-    // }
-    // return outputStream;
-    // }
-
     public DocumentModel getDocumentModel() {
         return documentModel;
     }
