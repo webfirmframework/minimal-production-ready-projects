@@ -43,6 +43,8 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
             .getLogger(IndexPageLayout.class.getName());
 
     private DocumentModel documentModel;
+    
+    private Div mainDiv;
 
     public IndexPageLayout(DocumentModel documentModel) {
         super(null);
@@ -91,76 +93,82 @@ public class IndexPageLayout extends Html implements ServerAsyncMethod {
         
         new Body(this).give(body -> {
             
-            new Div(body, new Id("mainDivId")) .give(div -> {
-                
-                new NoTag(div, "session id " + documentModel.getHttpSession().getId());
-                
-                new Br(div);
-                
-                new A(div, new Href("https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html"), 
-                        new Target(Target.BLANK)) .give(a -> {
-                    new NoTag(a, "visit webfirmframework developers guide");
-                });
-                
-                new Br(div);
-                
-                new A(div, new Href("https://foundation.zurb.com/sites/docs/kitchen-sink.html"), 
-                        new Target(Target.BLANK)).give(a -> {
-                    new NoTag(a, "visit foundation tutorial");
-                });
-                
-                new H1(div).give(h -> {
-                    new NoTag(h, "Sample with foundation css framework ");  
-                });
-                
-                new H5(div).give(h -> {
-                    new NoTag(h, "I'm a responsive table in foundation css, "
-                            + "resize the browser and check. "
-                            + "Each row is added with a 1 second delay and "
-                            + "Thread is used to add rows asynchronously. "
-                            + "You can also click on Insert SampleTemplate1 button to check it.");  
-                });
-                
-                //responsive table
-                new ResponsiveTable(div, documentModel);               
-                
-                
-                new Button(div, new OnClick(IndexPageLayout.this), 
-                        new ClassAttribute("button")).give(btn -> {
-                    new NoTag(btn, "Insert SampleTemplate1");
-                });
-                
-                
-                new Button(div,
-                        new ClassAttribute("alert button"),
-                        new OnClick("return confirm('Do you want to send some data to server to print in server console?');", 
-                        (data, event) -> {
-                            String value = (String) data.getValue("val");
-                            
-                            System.out.println("value: " + value);
-                            
-                            WffBMObject resultData = new WffBMObject();
-                            
-                            resultData.put("msg", 
-                                    BMValueType.STRING, 
-                                    "This is a message received from server!");
-                            
-                            documentModel.getBrowserPage().getTagRepository().findTitleTag().addInnerHtml(new NoTag(null, "Some other title"));
-                            
-                            return resultData;
-                            },
-                        "return {val: 'this is from client'};", 
-                        "if (jsObject && jsObject.msg) {alert(jsObject.msg);}")).give(btn -> {
-                    new NoTag(btn, "Send data to server");
-                });
-                
-                
-                new Br(div);
-                new Br(div);
+            mainDiv = new Div(body, new Id("mainDivId")) .give(div -> {
+                new NoTag(div, "Loading...");
             });
             
         });
         
+    }
+    
+    public void buildMainDivTags() {
+        Div div = mainDiv;
+        div.removeAllChildren();
+        
+        new NoTag(div, "session id " + documentModel.getHttpSession().getId());
+        
+        new Br(div);
+        
+        new A(div, new Href("https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html"), 
+                new Target(Target.BLANK)) .give(a -> {
+            new NoTag(a, "visit webfirmframework developers guide");
+        });
+        
+        new Br(div);
+        
+        new A(div, new Href("https://foundation.zurb.com/sites/docs/kitchen-sink.html"), 
+                new Target(Target.BLANK)).give(a -> {
+            new NoTag(a, "visit foundation tutorial");
+        });
+        
+        new H1(div).give(h -> {
+            new NoTag(h, "Sample with foundation css framework ");  
+        });
+        
+        new H5(div).give(h -> {
+            new NoTag(h, "I'm a responsive table in foundation css, "
+                    + "resize the browser and check. "
+                    + "Each row is added with a 1 second delay and "
+                    + "Thread is used to add rows asynchronously. "
+                    + "You can also click on Insert SampleTemplate1 button to check it.");  
+        });
+        
+        //responsive table
+        new ResponsiveTable(div, documentModel);               
+        
+        
+        new Button(div, new OnClick(IndexPageLayout.this), 
+                new ClassAttribute("button")).give(btn -> {
+            new NoTag(btn, "Insert SampleTemplate1");
+        });
+        
+        
+        new Button(div,
+                new ClassAttribute("alert button"),
+                new OnClick("return confirm('Do you want to send some data to server to print in server console?');", 
+                (data, event) -> {
+                    String value = (String) data.getValue("val");
+                    
+                    System.out.println("value: " + value);
+                    
+                    WffBMObject resultData = new WffBMObject();
+                    
+                    resultData.put("msg", 
+                            BMValueType.STRING, 
+                            "This is a message received from server!");
+                    
+                    documentModel.getBrowserPage().getTagRepository().findTitleTag().addInnerHtml(new NoTag(null, "Some other title"));
+                    
+                    return resultData;
+                    },
+                "return {val: 'this is from client'};", 
+                "if (jsObject && jsObject.msg) {alert(jsObject.msg);}")).give(btn -> {
+            new NoTag(btn, "Send data to server");
+        });
+        
+        
+        new Br(div);
+        new Br(div);
     }
     // @formatter:on
 
