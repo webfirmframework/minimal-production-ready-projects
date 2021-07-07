@@ -7,6 +7,10 @@ The projects are based on latest version of *wffweb-RELEASE*. [Visit developers 
 
 ___
 
+`production-sample-jakarta-ee-with-bootstrap5-css-framework` project can be run with tomcat 10 and Java 8 or later. This is the most modern way to build java web app. You can use any jakarta ee application server to run this project.
+
+___
+
 All projects are in maven.
 
 ### To open it in IntelliJ Java IDE: 
@@ -16,6 +20,9 @@ All projects are in maven.
 #### Go to File > Import > Existing Maven Projects and select project directory 
 
 ___
+
+
+
 
 ### Sample HTML code for foundation css framework
 #### [https://foundation.zurb.com/building-blocks/](https://foundation.zurb.com/building-blocks/)
