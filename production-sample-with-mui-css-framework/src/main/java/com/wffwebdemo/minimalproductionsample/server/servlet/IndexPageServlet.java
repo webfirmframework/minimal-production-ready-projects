@@ -50,6 +50,7 @@ public class IndexPageServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
      *      response)
      */
+    @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
 
@@ -59,18 +60,11 @@ public class IndexPageServlet extends HttpServlet {
 
             HttpSession session = request.getSession();
 
-            DocumentModel documentModel = (DocumentModel) session
-                    .getAttribute("DOCUMENT_MODEL");
+            DocumentModel documentModel = new DocumentModel();
+            
+            documentModel.setHttpSession(request.getSession());
 
-            IndexPage indexPage = null;
-
-            if (documentModel == null) {
-                documentModel = new DocumentModel();
-                documentModel.setHttpSession(request.getSession());
-                session.setAttribute("DOCUMENT_MODEL", documentModel);
-            }
-
-            indexPage = new IndexPage(documentModel);
+            IndexPage indexPage = new IndexPage(documentModel);
 
             BrowserPageContext.INSTANCE.addBrowserPage(session.getId(),
                     indexPage);
