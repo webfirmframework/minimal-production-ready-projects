@@ -2,6 +2,8 @@ package com.webfirmframework.wffwebconfig.page;
 
 import com.webfirmframework.wffweb.server.page.BrowserPage;
 import com.webfirmframework.wffweb.tag.html.AbstractHtml;
+import com.webfirmframework.wffweb.tag.html.attribute.event.ServerMethod;
+import com.webfirmframework.wffweb.wffbm.data.WffBMObject;
 import com.webfirmframework.wffwebconfig.AppSettings;
 import com.webfirmframework.wffwebconfig.server.constants.ServerConstants;
 import com.webfirmframework.ui.page.layout.IndexPageLayout;
@@ -23,7 +25,8 @@ public class IndexPage extends BrowserPage {
 
     private final HttpSession httpSession;
 
-    public IndexPage(HttpSession httpSession) {
+    public IndexPage(HttpSession httpSession, String uri) {
+        super.setURI(uri);
         this.httpSession = httpSession;
     }
 
@@ -52,6 +55,17 @@ public class IndexPage extends BrowserPage {
         return new IndexPageLayout(this, httpSession);
     }
 
+    @Override
+    protected void afterRender(AbstractHtml rootTag) {
+        super.addServerMethod("urlPathChanged", new ServerMethod() {
+            @Override
+            public WffBMObject invoke(Event event) {
+                IndexPage.super.setURI((String) event.data().getValue("path"));
+                return null;
+            }
+        });
+    }
+
     // this is new since 3.0.18
     @Override
     protected void onInitialClientPing(AbstractHtml rootTag) {
@@ -63,4 +77,19 @@ public class IndexPage extends BrowserPage {
     public HttpSession getHttpSession() {
         return httpSession;
     }
+
+    @Override
+    protected void beforeURIChange(String uriBefore, String uriAfter) {
+//        System.out.println("IndexPage.beforeURIChange");
+//        System.out.println("uriBefore = " + uriBefore);
+//        System.out.println("uriAfter = " + uriAfter);
+    }
+
+    @Override
+    protected void uriChanged(String uriBefore, String uriAfter) {
+//        System.out.println("IndexPage.uriChanged");
+//        System.out.println("uriBefore = " + uriBefore);
+//        System.out.println("uriAfter = " + uriAfter);
+    }
+
 }
