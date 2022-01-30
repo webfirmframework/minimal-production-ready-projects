@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 /**
  * Servlet implementation class HomePageServlet
  */
-@WebServlet({ "/index" })
+@WebServlet(urlPatterns = { "/ui/*" })
 public class IndexPageServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -52,13 +52,21 @@ public class IndexPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
 
+        if (request.getRequestURI().endsWith("/ui")) {
+            response.sendRedirect(request.getRequestURI() + "/");
+            return;
+        } else if (request.getRequestURI().equals(request.getContextPath() + "/")) {
+            response.sendRedirect(request.getContextPath() + "/ui/");
+            return;
+        }
+
         response.setContentType("text/html;charset=utf-8");
 
         try (OutputStream os = response.getOutputStream();) {
 
             HttpSession session = request.getSession();
 
-            IndexPage indexPage = new IndexPage(request.getSession());
+            IndexPage indexPage = new IndexPage(request.getSession(), request.getRequestURI());
 
             BrowserPageContext.INSTANCE.addBrowserPage(session.getId(),
                     indexPage);
