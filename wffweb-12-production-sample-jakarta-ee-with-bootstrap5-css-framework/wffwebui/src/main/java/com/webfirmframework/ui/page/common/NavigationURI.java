@@ -34,6 +34,9 @@ public enum NavigationURI {
     public Predicate<String> getPredicate(DocumentModel documentModel) {
         HttpSession httpSession = documentModel.httpSession();
         String contextPath = httpSession.getServletContext().getContextPath();
+        if (NavigationURI.LOGIN.equals(this)) {
+            return uri -> !"true".equals(httpSession.getAttribute("loginStatus")) && contextPath.concat(this.uri).equals(uri);
+        }
         if (!loginRequired) {
             return uri -> contextPath.concat(this.uri).equals(uri);
         }

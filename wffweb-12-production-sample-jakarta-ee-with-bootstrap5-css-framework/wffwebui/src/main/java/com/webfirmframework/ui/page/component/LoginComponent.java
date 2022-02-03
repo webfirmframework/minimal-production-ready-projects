@@ -3,6 +3,8 @@ package com.webfirmframework.ui.page.component;
 import com.webfirmframework.ui.page.common.NavigationURI;
 import com.webfirmframework.ui.page.css.Bootstrap5CssClass;
 import com.webfirmframework.ui.page.model.DocumentModel;
+import com.webfirmframework.wffweb.server.page.BrowserPage;
+import com.webfirmframework.wffweb.server.page.BrowserPageContext;
 import com.webfirmframework.wffweb.tag.html.attribute.AttributeNameConstants;
 import com.webfirmframework.wffweb.tag.html.attribute.Name;
 import com.webfirmframework.wffweb.tag.html.attribute.Type;
@@ -38,6 +40,13 @@ public class LoginComponent extends Div {
             if ("test".equals(username) && "test".equals(password)) {
                 documentModel.httpSession().setAttribute("loginStatus", "true");
                 documentModel.browserPage().setURI(NavigationURI.USER.getUri(documentModel));
+
+                //navigate to user account page in all other opened tabs
+                for (BrowserPage browserPage : BrowserPageContext.INSTANCE.getBrowserPages(documentModel.httpSession().getId()).values()) {
+                    if (BrowserPageContext.INSTANCE.existsAndValid(browserPage)) {
+                        browserPage.setURI(NavigationURI.USER.getUri(documentModel));
+                    }
+                }
                 return null;
             }
 
