@@ -66,7 +66,27 @@ public enum Bootstrap5CssClass implements CssClass {
 
     BTN_GROUP_LG("btn-group btn-group-lg"),
 
+    TABLE("table"),
+
     TABLE_RESPONSIVE("table-responsive"),
+
+    TABLE_BORDERED("table-bordered"),
+
+    TABLE_PRIMARY("table-primary"),
+
+    TABLE_SECONDARY("table-secondary"),
+
+    TABLE_SUCCESS("table-success"),
+
+    TABLE_DANGER("table-danger"),
+
+    TABLE_WARNING("table-warning"),
+
+    TABLE_INFO("table-info"),
+
+    TABLE_LIGHT("table-light"),
+
+    TABLE_DARK("table-dark"),
 
     FORM_GROUP("form-group"),
 

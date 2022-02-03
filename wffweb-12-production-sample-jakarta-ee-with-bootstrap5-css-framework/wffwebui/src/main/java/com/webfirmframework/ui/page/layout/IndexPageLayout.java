@@ -34,6 +34,10 @@ public class IndexPageLayout extends Html {
 
     private Div mainDiv;
 
+    // no need use volatile modifier, the framework internally handles it unless
+    // the value is assigned via a custom thread.
+    private AbstractHtml componentDivCurrentChild;
+
     public IndexPageLayout(BrowserPage browserPage, HttpSession httpSession) {
         super(null);
         super.setPrependDocType(true);
@@ -99,16 +103,34 @@ public class IndexPageLayout extends Html {
 
         URIStateSwitch componentDiv = new Div(mainDiv);
 
-        LoginComponent loginComponent = new LoginComponent(documentModel);
-
-        UserAccountComponent userAccountComponent = new UserAccountComponent(documentModel);
-
-        componentDiv.whenURI(NavigationURI.LOGIN.getPredicate(documentModel), () -> new AbstractHtml[]{loginComponent});
+        componentDiv.whenURI(NavigationURI.LOGIN.getPredicate(documentModel),
+                () -> {
+                    if (!(componentDivCurrentChild instanceof LoginComponent)) {
+                        componentDivCurrentChild = new LoginComponent(documentModel);
+                    }
+                    documentModel.browserPage().getTagRepository().findTitleTag().give(
+                            TagContent::text, "Login | wffweb demo");
+                    return new AbstractHtml[]{componentDivCurrentChild};
+                });
 
         componentDiv.whenURI(NavigationURI.USER.getPredicate(documentModel),
-                () -> new AbstractHtml[]{userAccountComponent},
+                () -> {
+                    documentModel.browserPage().getTagRepository().findTitleTag().give(
+                            TagContent::text, "User Account | wffweb demo");
+                    if (!(componentDivCurrentChild instanceof UserAccountComponent)) {
+                        componentDivCurrentChild = new UserAccountComponent(documentModel);
+                    }
+                    return new AbstractHtml[]{componentDivCurrentChild};
+                },
                 event -> {
-                    documentModel.browserPage().setURI(NavigationURI.LOGIN.getUri(documentModel));
+
+                    //if already logged in then navigate to user account page otherwise navigate to login page
+                    if ("true".equals(documentModel.httpSession().getAttribute("loginStatus"))) {
+                        documentModel.browserPage().setURI(NavigationURI.USER.getUri(documentModel));
+                    } else {
+                        documentModel.browserPage().setURI(NavigationURI.LOGIN.getUri(documentModel));
+                    }
+
                 });
 
     }

@@ -5,8 +5,11 @@ import com.webfirmframework.ui.page.css.Bootstrap5CssClass;
 import com.webfirmframework.ui.page.model.DocumentModel;
 import com.webfirmframework.ui.page.template.SampleTemplate1;
 import com.webfirmframework.ui.page.template.SampleTemplate2;
+import com.webfirmframework.wffweb.server.page.BrowserPage;
+import com.webfirmframework.wffweb.server.page.BrowserPageContext;
 import com.webfirmframework.wffweb.tag.html.AbstractHtml;
 import com.webfirmframework.wffweb.tag.html.Br;
+import com.webfirmframework.wffweb.tag.html.URIStateSwitch;
 import com.webfirmframework.wffweb.tag.html.attribute.Href;
 import com.webfirmframework.wffweb.tag.html.attribute.event.mouse.OnClick;
 import com.webfirmframework.wffweb.tag.html.formsandinputs.Button;
@@ -15,9 +18,15 @@ import com.webfirmframework.wffweb.tag.html.stylesandsemantics.Div;
 import com.webfirmframework.wffweb.tag.htmlwff.NoTag;
 import com.webfirmframework.wffweb.tag.htmlwff.TagContent;
 
+import java.util.Collection;
+
 public class UserAccountComponent extends Div {
 
     private final DocumentModel documentModel;
+
+    // no need use volatile modifier, the framework internally handles it unless
+    // the value is assigned via a custom thread.
+    private AbstractHtml widgetDivCurrentChild;
 
     public UserAccountComponent(DocumentModel documentModel) {
         super(null);
@@ -30,7 +39,13 @@ public class UserAccountComponent extends Div {
                 Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
                 new OnClick(event -> {
                     documentModel.httpSession().removeAttribute("loginStatus");
-                    documentModel.browserPage().setURI(NavigationURI.LOGIN.getUri(documentModel));
+                    //gets all browser pages associated with this session and navigate to login page
+                    Collection<BrowserPage> browserPages = BrowserPageContext.INSTANCE.getBrowserPages(documentModel.httpSession().getId()).values();
+                    for (BrowserPage browserPage : browserPages) {
+                        if (BrowserPageContext.INSTANCE.existsAndValid(browserPage)) {
+                            browserPage.setURI(NavigationURI.LOGIN.getUri(documentModel));
+                        }
+                    }
                     return null;
                 }))
                 .give(TagContent::text, "Logout");
@@ -67,23 +82,47 @@ public class UserAccountComponent extends Div {
         new Br(this);
         new Br(this);
 
-        var widgetDiv = new Div(this);
+        URIStateSwitch widgetDiv = new Div(this);
 
-        ViewItemsComponent viewItems = new ViewItemsComponent();
-        AddItemComponent addItem = new AddItemComponent();
+        widgetDiv.whenURI(NavigationURI.VIEW_ITEMS.getPredicate(documentModel),
+                () -> {
+                    documentModel.browserPage().getTagRepository().findTitleTag().give(
+                            TagContent::text, "View Items | User Account | wffweb demo");
+                    if (!(widgetDivCurrentChild instanceof ViewItemsComponent)) {
+                        widgetDivCurrentChild = new ViewItemsComponent();
+                    }
+                    return new AbstractHtml[]{widgetDivCurrentChild};
+                });
 
-        widgetDiv.whenURI(NavigationURI.VIEW_ITEMS.getPredicate(documentModel), () -> new AbstractHtml[]{viewItems});
-        widgetDiv.whenURI(NavigationURI.ADD_ITEM.getPredicate(documentModel), () -> new AbstractHtml[]{addItem});
+        widgetDiv.whenURI(NavigationURI.ADD_ITEM.getPredicate(documentModel),
+                () -> {
+                    documentModel.browserPage().getTagRepository().findTitleTag().give(
+                            TagContent::text, "Add Item | User Account | wffweb demo");
+                    if (!(widgetDivCurrentChild instanceof AddItemComponent)) {
+                        widgetDivCurrentChild = new AddItemComponent();
+                    }
+                    return new AbstractHtml[]{widgetDivCurrentChild};
+                });
 
+        widgetDiv.whenURI(NavigationURI.SAMPLE_TEMPLATE1.getPredicate(documentModel),
+                () -> {
+                    documentModel.browserPage().getTagRepository().findTitleTag().give(
+                            TagContent::text, "SampleTemplate1 | User Account | wffweb demo");
+                    if (!(widgetDivCurrentChild instanceof SampleTemplate1)) {
+                        widgetDivCurrentChild = new SampleTemplate1(documentModel);
+                    }
+                    return new AbstractHtml[]{widgetDivCurrentChild};
+                });
 
-        SampleTemplate1 sampleTemplate1 = new SampleTemplate1(documentModel);
-
-        SampleTemplate2 sampleTemplate2 = new SampleTemplate2(documentModel);
-
-        widgetDiv.whenURI(NavigationURI.SAMPLE_TEMPLATE1.getPredicate(documentModel), () -> new AbstractHtml[]{sampleTemplate1});
-
-        widgetDiv.whenURI(NavigationURI.SAMPLE_TEMPLATE2.getPredicate(documentModel), () -> new AbstractHtml[]{sampleTemplate2});
-
+        widgetDiv.whenURI(NavigationURI.SAMPLE_TEMPLATE2.getPredicate(documentModel),
+                () -> {
+                    documentModel.browserPage().getTagRepository().findTitleTag().give(
+                            TagContent::text, "SampleTemplate2 | User Account | wffweb demo");
+                    if (!(widgetDivCurrentChild instanceof SampleTemplate2)) {
+                        widgetDivCurrentChild = new SampleTemplate2(documentModel);
+                    }
+                    return new AbstractHtml[]{widgetDivCurrentChild};
+                });
 
         sampleTemplateButtons();
     }
