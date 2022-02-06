@@ -59,6 +59,8 @@ public class IndexPageServlet extends HttpServlet {
         try (OutputStream os = response.getOutputStream();) {
 
             HttpSession session = request.getSession();
+            
+            session.setMaxInactiveInterval(ServerConstants.SESSION_TIMEOUT_SECONDS);
 
             DocumentModel documentModel = new DocumentModel();
             
