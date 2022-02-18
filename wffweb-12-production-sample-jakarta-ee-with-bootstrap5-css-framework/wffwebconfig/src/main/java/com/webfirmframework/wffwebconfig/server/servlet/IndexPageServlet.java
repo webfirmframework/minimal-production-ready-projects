@@ -61,6 +61,8 @@ public class IndexPageServlet extends HttpServlet {
         }
 
         response.setContentType("text/html;charset=utf-8");
+        //NB: it is required to work "Reopen Closed Tab"
+        response.setHeader("Cache-Control", "no-store");
 
         try (OutputStream os = response.getOutputStream();) {
 
