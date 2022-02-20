@@ -1,7 +1,7 @@
 package com.webfirmframework.ui.page.common;
 
 import com.webfirmframework.ui.page.model.DocumentModel;
-import jakarta.servlet.http.HttpSession;
+import com.webfirmframework.wffweb.server.page.BrowserPageSession;
 
 import java.util.function.Predicate;
 
@@ -32,21 +32,21 @@ public enum NavigationURI {
     }
 
     public Predicate<String> getPredicate(DocumentModel documentModel) {
-        HttpSession httpSession = documentModel.httpSession();
-        String contextPath = httpSession.getServletContext().getContextPath();
+        BrowserPageSession session = documentModel.session();
+        String contextPath = documentModel.contextPath();
         if (NavigationURI.LOGIN.equals(this)) {
-            return uri -> !"true".equals(httpSession.getAttribute("loginStatus")) && contextPath.concat(this.uri).equals(uri);
+            return uri -> !"true".equals(session.userProperties().get("loginStatus")) && contextPath.concat(this.uri).equals(uri);
         }
         if (!loginRequired) {
             return uri -> contextPath.concat(this.uri).equals(uri);
         }
         if (parentPath) {
-            return uri -> "true".equals(httpSession.getAttribute("loginStatus")) && uri.startsWith(contextPath.concat(this.uri));
+            return uri -> "true".equals(session.userProperties().get("loginStatus")) && uri.startsWith(contextPath.concat(this.uri));
         }
-        return uri -> "true".equals(httpSession.getAttribute("loginStatus")) && uri.equals(contextPath.concat(this.uri));
+        return uri -> "true".equals(session.userProperties().get("loginStatus")) && uri.equals(contextPath.concat(this.uri));
     }
 
     public String getUri(DocumentModel documentModel) {
-        return documentModel.httpSession().getServletContext().getContextPath() + uri;
+        return documentModel.contextPath() + uri;
     }
 }

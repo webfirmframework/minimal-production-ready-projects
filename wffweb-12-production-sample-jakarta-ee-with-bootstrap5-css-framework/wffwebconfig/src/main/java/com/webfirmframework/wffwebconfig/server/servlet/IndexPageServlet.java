@@ -1,8 +1,7 @@
 package com.webfirmframework.wffwebconfig.server.servlet;
 
 import com.webfirmframework.wffweb.server.page.BrowserPageContext;
-import com.webfirmframework.wffweb.tag.html.attribute.core.AttributeRegistry;
-import com.webfirmframework.wffweb.tag.html.core.TagRegistry;
+import com.webfirmframework.wffweb.server.page.BrowserPageSession;
 import com.webfirmframework.wffwebconfig.page.IndexPage;
 import com.webfirmframework.wffwebconfig.server.constants.ServerConstants;
 import jakarta.servlet.ServletException;
@@ -38,9 +37,9 @@ public class IndexPageServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         // optional
-        TagRegistry.loadAllTagClasses();
-        AttributeRegistry.loadAllAttributeClasses();
-        LOGGER.info("Loaded all wffweb classes");
+//        TagRegistry.loadAllTagClasses();
+//        AttributeRegistry.loadAllAttributeClasses();
+//        LOGGER.info("Loaded all wffweb classes");
         ServerConstants.CONTEXT_PATH = getServletContext().getContextPath();
     }
 
@@ -50,7 +49,7 @@ public class IndexPageServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+                         HttpServletResponse response) throws ServletException, IOException {
 
         if (request.getRequestURI().endsWith("/ui")) {
             response.sendRedirect(request.getRequestURI() + "/");
@@ -67,10 +66,13 @@ public class IndexPageServlet extends HttpServlet {
         try (OutputStream os = response.getOutputStream();) {
 
             HttpSession session = request.getSession();
-            
+
             session.setMaxInactiveInterval(ServerConstants.SESSION_TIMEOUT_SECONDS);
 
-            IndexPage indexPage = new IndexPage(request.getSession(), request.getRequestURI());
+            BrowserPageSession bpSession = BrowserPageContext.INSTANCE.getSession(session.getId(), true);
+            bpSession.setWeakProperty("httpSession", session);
+
+            IndexPage indexPage = new IndexPage(session.getServletContext().getContextPath(), bpSession, request.getRequestURI());
 
             BrowserPageContext.INSTANCE.addBrowserPage(session.getId(),
                     indexPage);
