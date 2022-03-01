@@ -1,10 +1,9 @@
 package com.webfirmframework.ui.page.component;
 
+import com.webfirmframework.ui.page.common.GlobalSTC;
 import com.webfirmframework.ui.page.common.NavigationURI;
 import com.webfirmframework.ui.page.css.Bootstrap5CssClass;
 import com.webfirmframework.ui.page.model.DocumentModel;
-import com.webfirmframework.wffweb.server.page.BrowserPage;
-import com.webfirmframework.wffweb.server.page.BrowserPageContext;
 import com.webfirmframework.wffweb.tag.html.attribute.AttributeNameConstants;
 import com.webfirmframework.wffweb.tag.html.attribute.Name;
 import com.webfirmframework.wffweb.tag.html.attribute.Type;
@@ -18,10 +17,15 @@ import com.webfirmframework.wffweb.tag.html.html5.attribute.Placeholder;
 import com.webfirmframework.wffweb.tag.html.stylesandsemantics.Div;
 import com.webfirmframework.wffweb.tag.htmlwff.TagContent;
 import com.webfirmframework.wffweb.wffbm.data.WffBMByteArray;
+import com.webfirmframework.wffwebcommon.TokenUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Clock;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Map;
 
 public class LoginComponent extends Div {
 
@@ -30,6 +34,9 @@ public class LoginComponent extends Div {
     public LoginComponent(DocumentModel documentModel) {
         super(null);
         this.documentModel = documentModel;
+        GlobalSTC.LOGGER_STC.setContent(
+                ZonedDateTime.now(Clock.systemUTC()).format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")) +
+                        ":~$ created new LoginComponent");
         develop();
     }
 
@@ -53,15 +60,16 @@ public class LoginComponent extends Div {
             char[] passwordChars = StandardCharsets.UTF_8.decode(ByteBuffer.wrap(password.toByteArray())).array();
 
             if ("test".equals(username) && Arrays.equals("test".toCharArray(), passwordChars)) {
-                documentModel.httpSession().setAttribute("loginStatus", "true");
-                documentModel.browserPage().setURI(NavigationURI.USER.getUri(documentModel));
 
-                //navigate to user account page in all the other opened tabs
-                for (BrowserPage browserPage : BrowserPageContext.INSTANCE.getBrowserPages(documentModel.httpSession().getId()).values()) {
-                    if (BrowserPageContext.INSTANCE.existsAndValid(browserPage)) {
-                        browserPage.setURI(NavigationURI.USER.getUri(documentModel));
-                    }
-                }
+                Map<String, Object> payload = Map.of("userId", 5, "username", "test", "role", "user");
+                documentModel.session().localStorage().setToken("jwtToken", TokenUtil.createJWT(payload));
+                //navigate to user account page on all other opened tabs
+                //This works well on multi node mode
+                documentModel.browserPage().getTagRepository()
+                        .executeJsInOtherBrowserPages(
+                                "wffAsync.setURI('%s');".formatted(NavigationURI.USER.getUri(documentModel)));
+                //navigate to user account page
+                documentModel.browserPage().setURI(NavigationURI.USER.getUri(documentModel));
                 return null;
             }
 
