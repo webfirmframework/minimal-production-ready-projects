@@ -19,6 +19,7 @@
 	<!--command to build war: mvn clean package-->
 
 	<modules>
+		<module>wffwebcommon</module>
 		<module>web</module>
 		<module>wffwebui</module>
 		<module>wffwebconfig</module>
@@ -40,8 +41,18 @@
 		<dependency>
 			<groupId>com.webfirmframework</groupId>
 			<artifactId>wffweb</artifactId>
-			<version>12.0.0-SNAPSHOT</version>
+			<version>12.0.0-beta.4</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.18.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20211205</version>
 		</dependency>
 	</dependencies>
 

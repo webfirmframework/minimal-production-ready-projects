@@ -2,28 +2,29 @@ package com.webfirmframework.wffwebconfig.server.servlet;
 
 import com.webfirmframework.wffweb.server.page.BrowserPageContext;
 import com.webfirmframework.wffweb.server.page.BrowserPageSession;
+import com.webfirmframework.wffwebcommon.TokenUtil;
 import com.webfirmframework.wffwebconfig.page.IndexPage;
 import com.webfirmframework.wffwebconfig.server.constants.ServerConstants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
  * Servlet implementation class HomePageServlet
  */
-@WebServlet(urlPatterns = { "/ui/*" })
+@WebServlet(urlPatterns = {"/ui/*"})
 public class IndexPageServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static Logger LOGGER = Logger
+    private static final Logger LOGGER = Logger
             .getLogger(IndexPageServlet.class.getName());
 
     /**
@@ -45,7 +46,7 @@ public class IndexPageServlet extends HttpServlet {
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
+     * response)
      */
     @Override
     protected void doGet(HttpServletRequest request,
@@ -63,20 +64,45 @@ public class IndexPageServlet extends HttpServlet {
         //NB: it is required to work "Reopen Closed Tab"
         response.setHeader("Cache-Control", "no-store");
 
-        try (OutputStream os = response.getOutputStream();) {
-
-            HttpSession session = request.getSession();
-
+        String httpSessionId = null;
+        HttpSession session = null;
+        if (ServerConstants.MULTI_NODE_MODE) {
+            final Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (ServerConstants.WFFWEB_TOKEN_COOKIE.equals(cookie.getName())) {
+                        if (cookie.getValue() != null) {
+                            JSONObject json = TokenUtil.getPayloadFromJWT(cookie.getValue());
+                            final Object id = json != null ? json.get("id") : null;
+                            httpSessionId = id != null ? String.valueOf(id) : null;
+                        }
+                    }
+                }
+            }
+            if (httpSessionId == null) {
+                httpSessionId = UUID.randomUUID().toString();
+                Cookie cookie = new Cookie(ServerConstants.WFFWEB_TOKEN_COOKIE, TokenUtil.createJWT(Map.of("id", httpSessionId)));
+                cookie.setPath("/ui");
+                cookie.setMaxAge(-1);
+                cookie.setHttpOnly(true);
+                response.addCookie(cookie);
+            }
+        } else {
+            session = request.getSession();
             session.setMaxInactiveInterval(ServerConstants.SESSION_TIMEOUT_SECONDS);
+        }
 
-            BrowserPageSession bpSession = BrowserPageContext.INSTANCE.getSession(session.getId(), true);
+        BrowserPageSession bpSession = BrowserPageContext.INSTANCE.getSession(httpSessionId, true);
+        if (session != null) {
             bpSession.setWeakProperty("httpSession", session);
+        }
 
-            IndexPage indexPage = new IndexPage(session.getServletContext().getContextPath(), bpSession, request.getRequestURI());
+        IndexPage indexPage = new IndexPage(request.getServletContext().getContextPath(), bpSession, request.getRequestURI());
 
-            BrowserPageContext.INSTANCE.addBrowserPage(session.getId(),
-                    indexPage);
+        BrowserPageContext.INSTANCE.addBrowserPage(httpSessionId,
+                indexPage);
 
+        try (OutputStream os = response.getOutputStream()) {
             indexPage.toOutputStream(os, "UTF-8");
             os.flush();
         }

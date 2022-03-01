@@ -81,19 +81,4 @@ public class IndexPage extends BrowserPage {
         return session;
     }
 
-    @Override
-    protected void beforeURIChange(String uriBefore, String uriAfter, URIEventInitiator initiator) {
-        System.out.println("IndexPage.beforeURIChange");
-        System.out.println("uriBefore = " + uriBefore);
-        System.out.println("uriAfter = " + uriAfter);
-        System.out.println("initiator = " + initiator);
-    }
-
-    @Override
-    protected void afterURIChange(String uriBefore, String uriAfter, URIEventInitiator initiator) {
-        System.out.println("IndexPage.afterURIChange");
-        System.out.println("uriBefore = " + uriBefore);
-        System.out.println("uriAfter = " + uriAfter);
-        System.out.println("initiator = " + initiator);
-    }
 }
