@@ -68,14 +68,14 @@ public class IndexPageLayout extends Html {
                     new Rel("stylesheet"),
                     new CustomAttribute("integrity", "sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"),
                     new CustomAttribute("crossorigin", "anonymous"));
-            new Link(head,
-                    new Rel(Rel.STYLESHEET),
-                    new Href(contextPath + "/assets/css/app.css"));
-
 
             new Script(head,
                     new Defer(),
-                    new Src(contextPath + "https://www.gstatic.com/charts/loader.js"));
+                    new Src("https://www.gstatic.com/charts/loader.js"));
+
+            new Link(head,
+                    new Rel(Rel.STYLESHEET),
+                    new Href(contextPath + "/assets/css/app.css"));
 
             new Script(head,
                     new Defer(),
