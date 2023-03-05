@@ -41,18 +41,18 @@
 		<dependency>
 			<groupId>com.webfirmframework</groupId>
 			<artifactId>wffweb</artifactId>
-			<version>12.0.0-beta.7</version>
+			<version>12.0.0-beta.8</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
-			<version>3.18.3</version>
+			<version>4.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20211205</version>
+			<version>20230227</version>
 		</dependency>
 	</dependencies>
 
