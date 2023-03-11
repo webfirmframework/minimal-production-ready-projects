@@ -56,7 +56,7 @@ public class UserAccountComponent extends Div {
                     //This works well on multi node mode
                     documentModel.browserPage().getTagRepository()
                             .executeJsInOtherBrowserPages(
-                                    "wffAsync.setURI('%s');".formatted(NavigationURI.LOGIN.getUri(documentModel)));
+                                    "window.setURI('%s');".formatted(NavigationURI.LOGIN.getUri(documentModel)));
 
                     //navigate to login page
                     documentModel.browserPage().setURI(NavigationURI.LOGIN.getUri(documentModel));
@@ -84,7 +84,7 @@ public class UserAccountComponent extends Div {
         new A(this,
                 Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
                 new Href(itemsURI),
-                new OnClick("event.preventDefault(); wffAsync.setURI('" + itemsURI + "');"))
+                new OnClick("event.preventDefault(); window.setURI('" + itemsURI + "');"))
                 .give(TagContent::text, "View Items");
 
         new Br(this);
@@ -230,7 +230,7 @@ public class UserAccountComponent extends Div {
         new Br(this);
         new A(this,
                 new Href(sampleTemplate1URI),
-                new OnClick("event.preventDefault(); wffAsync.setURI('" + sampleTemplate1URI + "', function(){loadingIcon.hidden = false;});"),
+                new OnClick("event.preventDefault(); window.setURI('" + sampleTemplate1URI + "', function(){loadingIcon.hidden = false;});"),
                 Bootstrap5CssClass.BTN_INFO_SM.getAttribute()).give(TagContent::text, "SampleTemplate1");
 
 
@@ -240,7 +240,7 @@ public class UserAccountComponent extends Div {
 
         new A(this,
                 new Href(sampleTemplate2URI),
-                new OnClick("event.preventDefault(); wffAsync.setURI('" + sampleTemplate2URI + "', function(){loadingIcon.hidden = false;});"),
+                new OnClick("event.preventDefault(); window.setURI('" + sampleTemplate2URI + "', function(){loadingIcon.hidden = false;});"),
                 Bootstrap5CssClass.BTN_INFO_SM.getAttribute()).give(TagContent::text, "SampleTemplate2");
 
     }
