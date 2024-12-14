@@ -50,8 +50,9 @@ public enum NavigationURI {
 
         LocalStorage localStorage = documentModel.session().localStorage();
         String contextPath = documentModel.contextPath();
+        String sessionId = documentModel.session().id();
         if (NavigationURI.LOGIN.equals(this)) {
-            return uriEvent -> !TokenUtil.isValidJWT(localStorage.getToken("jwtToken")) && contextPath.concat(this.uri).equals(uriEvent.uriAfter());
+            return uriEvent -> !TokenUtil.isValidJWT(localStorage.getToken("jwtToken"), sessionId) && contextPath.concat(this.uri).equals(uriEvent.uriAfter());
         }
         if (!loginRequired && !parentPath) {
             if (patternType) {
@@ -70,15 +71,15 @@ public enum NavigationURI {
         }
         if (loginRequired && parentPath) {
             if (patternType) {
-                return uriEvent -> TokenUtil.isValidJWT(localStorage.getToken("jwtToken")) && URIUtil.patternMatchesBase(this.uri, uriEvent.uriAfter());
+                return uriEvent -> TokenUtil.isValidJWT(localStorage.getToken("jwtToken"), sessionId) && URIUtil.patternMatchesBase(this.uri, uriEvent.uriAfter());
             }
-            return uriEvent -> TokenUtil.isValidJWT(localStorage.getToken("jwtToken")) && uriEvent.uriAfter().startsWith(contextPath.concat(this.uri));
+            return uriEvent -> TokenUtil.isValidJWT(localStorage.getToken("jwtToken"), sessionId) && uriEvent.uriAfter().startsWith(contextPath.concat(this.uri));
         } else if (loginRequired) {
             if (patternType) {
-                return uriEvent -> TokenUtil.isValidJWT(localStorage.getToken("jwtToken")) && URIUtil.patternMatches(this.uri, uriEvent.uriAfter());
+                return uriEvent -> TokenUtil.isValidJWT(localStorage.getToken("jwtToken"), sessionId) && URIUtil.patternMatches(this.uri, uriEvent.uriAfter());
             }
         }
-        return uriEvent -> TokenUtil.isValidJWT(localStorage.getToken("jwtToken")) && uriEvent.uriAfter().equals(contextPath.concat(this.uri));
+        return uriEvent -> TokenUtil.isValidJWT(localStorage.getToken("jwtToken"), sessionId) && uriEvent.uriAfter().equals(contextPath.concat(this.uri));
     }
 
     public String getUri(DocumentModel documentModel) {
