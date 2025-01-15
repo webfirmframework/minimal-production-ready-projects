@@ -7,7 +7,7 @@ The projects are based on latest version of *wffweb-3.0.20* and *wffweb-12.0.2*.
 
 ___
 
-`wffweb-12-production-sample-jakarta-ee-with-bootstrap5-css-framework` project can be run with tomcat 10 and Java 17 or later. This is the most modern way to build java web app, it uses the *wffweb-12.0.2*. You can use any jakarta ee application server to run this project. [Checkout live demo in Heroku](https://wffweb.herokuapp.com/ui) and its single module source code can be found [here](https://github.com/webfirmframework/wffweb-demo-deployment). It uses embedded tomcat.
+`wffweb-12-production-sample-jakarta-ee-with-bootstrap5-css-framework` project can be run with tomcat 10 and Java 17 or later. This is the most modern way to build java web app, it uses the *wffweb-12.0.2*. You can use any jakarta ee application server to run this project. Single module source code project can be found [here](https://github.com/webfirmframework/wffweb-demo-deployment). It uses embedded tomcat and compatible to be deployed on Heroku with a single click.
 ___
 
 `production-sample-jakarta-ee-with-bootstrap5-css-framework` project can be run with tomcat 10 and Java 8 or later. You can use any jakarta ee application server to run this project.
