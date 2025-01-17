@@ -7,7 +7,6 @@ import com.webfirmframework.ui.page.component.UserAccountComponent;
 import com.webfirmframework.ui.page.model.DocumentModel;
 import com.webfirmframework.wffweb.server.page.BrowserPage;
 import com.webfirmframework.wffweb.server.page.BrowserPageSession;
-import com.webfirmframework.wffweb.server.page.LocalStorage;
 import com.webfirmframework.wffweb.tag.html.*;
 import com.webfirmframework.wffweb.tag.html.attribute.*;
 import com.webfirmframework.wffweb.tag.html.attribute.global.ClassAttribute;
@@ -23,7 +22,7 @@ import com.webfirmframework.wffweb.tag.html.stylesandsemantics.Div;
 import com.webfirmframework.wffweb.tag.html.stylesandsemantics.Span;
 import com.webfirmframework.wffweb.tag.htmlwff.NoTag;
 import com.webfirmframework.wffweb.tag.htmlwff.TagContent;
-import com.webfirmframework.wffwebcommon.TokenUtil;
+import com.webfirmframework.wffwebcommon.MultiInstanceTokenUtil;
 
 import java.util.logging.Logger;
 
@@ -106,9 +105,9 @@ public class IndexPageLayout extends Html {
             new Span(tag, new ClassAttribute("visually-hidden")).give(TagContent::text, "Loading...");
         });
 
-        URIStateSwitch componentDiv = new Div(mainDiv);
+        final URIStateSwitch componentDiv = new Div(mainDiv);
 
-        componentDiv.whenURI(NavigationURI.LOGIN.getPredicate(documentModel),
+        componentDiv.whenURI(NavigationURI.LOGIN.getPredicate(documentModel, componentDiv),
                 () -> {
                     if (!(componentDivCurrentChild instanceof LoginComponent)) {
                         componentDivCurrentChild = new LoginComponent(documentModel);
@@ -118,7 +117,7 @@ public class IndexPageLayout extends Html {
                     return new AbstractHtml[]{componentDivCurrentChild};
                 });
 
-        componentDiv.whenURI(NavigationURI.REALTIME_SERVER_LOG.getPredicate(documentModel),
+        componentDiv.whenURI(NavigationURI.REALTIME_SERVER_LOG.getPredicate(documentModel, componentDiv),
                 () -> {
                     documentModel.browserPage().getTagRepository().findTitleTag().give(
                             TagContent::text, "Server Log | User Account | wffweb demo");
@@ -128,7 +127,7 @@ public class IndexPageLayout extends Html {
                     return new AbstractHtml[]{componentDivCurrentChild};
                 });
 
-        componentDiv.whenURI(NavigationURI.USER.getPredicate(documentModel),
+        componentDiv.whenURI(NavigationURI.USER.getPredicate(documentModel, componentDiv),
                 () -> {
                     documentModel.browserPage().getTagRepository().findTitleTag().give(
                             TagContent::text, "User Account | wffweb demo");
@@ -139,9 +138,8 @@ public class IndexPageLayout extends Html {
                 },
                 event -> {
 
-                    LocalStorage.Item token = documentModel.session().localStorage().getToken("jwtToken");
                     //if already logged in then navigate to user account page otherwise navigate to login page
-                    if (TokenUtil.isValidJWT(token, documentModel.session().id())) {
+                    if (MultiInstanceTokenUtil.hasValidJWT(documentModel.session())) {
                         documentModel.browserPage().setURI(NavigationURI.USER.getUri(documentModel));
                     } else {
                         documentModel.browserPage().setURI(NavigationURI.LOGIN.getUri(documentModel));
