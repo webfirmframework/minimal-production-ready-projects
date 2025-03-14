@@ -6,5 +6,4 @@ module com.webfirmframework.wffwebconfig {
     requires com.webfirmframework.wffwebui;
     requires com.webfirmframework.wffwebcommon;
     requires jakarta.websocket;
-    requires org.json;
 }
