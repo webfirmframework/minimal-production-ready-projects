@@ -3,11 +3,11 @@ This repository contains minimal production ready webfirmframework  projects. Th
 
 ___
 
-The projects are based on latest version of *wffweb-3.0.20* and *wffweb-12.0.4*. [Visit developers guide for webfirmframework doc](https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html).
+The projects are based on latest version of *wffweb-3.0.20* and *wffweb-12.0.5*. [Visit developers guide for webfirmframework doc](https://webfirmframework.github.io/developers-guide-wffweb-3/get-started.html).
 
 ___
 
-`wffweb-12-production-sample-jakarta-ee-with-bootstrap5-css-framework` project can be run with tomcat 10 or later and Java 17 or later. This is the most modern way to build java web app, it uses the *wffweb-12.0.4*. You can use any jakarta ee application server to run this project. Single module source code project can be found [here](https://github.com/webfirmframework/wffweb-demo-deployment). It uses embedded tomcat and compatible to be deployed on Heroku with a single click.
+`wffweb-12-production-sample-jakarta-ee-with-bootstrap5-css-framework` project can be run with tomcat 10 or later and Java 17 or later. This is the most modern way to build java web app, it uses the *wffweb-12.0.5*. You can use any jakarta ee application server to run this project. Single module source code project can be found [here](https://github.com/webfirmframework/wffweb-demo-deployment). It uses embedded tomcat and compatible to be deployed on Heroku with a single click.
 
 NB: Do not forget to change random secret string in `com.webfirmframework.wffwebcommon.MultiInstanceTokenUtil` class before deployment.
 ___
