@@ -84,6 +84,62 @@ public class UserAccountComponent extends Div {
         new Br(this);
         new Br(this);
 
+        //navigation using client side setURI method
+        new A(this,
+                Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
+                new Href(itemsURI),
+                new OnClick("event.preventDefault(); wffAsync.setURI('" + itemsURI + "', null, null, true);"))
+                .give(TagContent::text, "View Items with replace true");
+
+        new Br(this);
+        new Br(this);
+
+        final String viewItemURI = NavigationURI.VIEW_ITEM.getUri(documentModel) + "?itemId=55555";
+        //navigation using client side setURI method
+        new A(this,
+                Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
+                new Href(itemsURI),
+                new OnClick("event.preventDefault(); wffAsync.setURI('" + viewItemURI + "');"))
+                .give(TagContent::text, "View Item 55555 by query string param");
+
+        new Br(this);
+        new Br(this);
+
+        final String viewItemURI2 = NavigationURI.VIEW_ITEM.getUri(documentModel) + "?itemId=14";
+        //navigation using client side setURI method
+        new A(this,
+                Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
+                new Href(itemsURI),
+                new OnClick("event.preventDefault(); wffAsync.setURI('" + viewItemURI2 + "');"))
+                .give(TagContent::text, "View Item 14 by query string param");
+
+        new Br(this);
+        new Br(this);
+
+
+        final String viewItemURI3 = NavigationURI.VIEW_ITEM.getUri(documentModel) + "?itemId=14#hash1";
+        //navigation using client side setURI method
+        new A(this,
+                Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
+                new Href(viewItemURI3),
+                new OnClick("event.preventDefault(); wffAsync.setURI('" + viewItemURI3 + "');"))
+                .give(TagContent::text, "View Item 14 by query string param hash1");
+
+        new Br(this);
+        new Br(this);
+
+        final String viewItemURI4 = NavigationURI.VIEW_ITEM.getUri(documentModel) + "?itemId=14#hash2";
+        //navigation using client side setURI method
+        new A(this,
+                Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
+                new Href(viewItemURI4),
+                new OnClick("event.preventDefault(); wffAsync.setURI('" + viewItemURI4 + "');"))
+                .give(TagContent::text, "View Item 14 by query string param hash2");
+
+        new Br(this);
+        new Br(this);
+
+
         final String addItemURI = NavigationURI.ADD_ITEM.getUri(documentModel);
         //navigation using server side setURI method
         new A(this,
@@ -97,6 +153,23 @@ public class UserAccountComponent extends Div {
                     return null;
                 }, null, "loadingIcon.hidden = true;"))
                 .give(TagContent::text, "Add Item");
+
+
+        new Br(this);
+        new Br(this);
+
+        //navigation using server side setURI method
+        new A(this,
+                Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
+                new Href(addItemURI),
+                new OnClick("""
+                        event.preventDefault();
+                        loadingIcon.hidden = false;
+                        return true;""", event -> {
+                    documentModel.browserPage().setURI(NavigationURI.ADD_ITEM.getUri(documentModel), true);
+                    return null;
+                }, null, "loadingIcon.hidden = true;"))
+                .give(TagContent::text, "Add Item with replace true");
 
 
         new Br(this);
@@ -119,6 +192,23 @@ public class UserAccountComponent extends Div {
         new Br(this);
         new Br(this);
 
+        final String priceHistoryURI2 = NavigationURI.ITEM_PRICE_HISTORY_CHART.getUri(documentModel).replace("{itemId}", "5");
+        //navigation using server side setURI method
+        new A(this,
+                Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
+                new Href(priceHistoryURI2),
+                new OnClick("""
+                        event.preventDefault();
+                        loadingIcon.hidden = false;
+                        return true;""", event -> {
+                    documentModel.browserPage().setURI(priceHistoryURI2);
+                    return null;
+                }, null, "loadingIcon.hidden = true;"))
+                .give(TagContent::text, "Item 5 Price History");
+
+        new Br(this);
+        new Br(this);
+
         final String realtimeClockURI = NavigationURI.REALTIME_CLOCK.getUri(documentModel);
         //navigation using server side setURI method
         new A(this,
@@ -132,6 +222,32 @@ public class UserAccountComponent extends Div {
                     return null;
                 }, null, "loadingIcon.hidden = true;"))
                 .give(TagContent::text, "Realtime Server Clock");
+
+        new Br(this);
+        new Br(this);
+
+        final String sampleFilesUploadWithoutActionUrlUri = NavigationURI.SAMPLE_FILES_UPLOAD_WITHOUT_ACTION_URL_COMPONENT.getUri(documentModel);
+        //navigation using server side setURI method
+        new A(this,
+                Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
+                new Href(sampleFilesUploadWithoutActionUrlUri),
+                new OnClick("""
+                        event.preventDefault();
+                        loadingIcon.hidden = false;
+                        return true;""", event -> {
+                    documentModel.browserPage().setURI(sampleFilesUploadWithoutActionUrlUri);
+                    return null;
+                }, null, "loadingIcon.hidden = true;"))
+                .give(TagContent::text, "Sample files upload without action url");
+
+        new Br(this);
+        new Br(this);
+
+        //calling custom Server Method
+        new A(this,
+                Bootstrap5CssClass.BTN_PRIMARY.getAttribute(),
+                new OnClick("event.preventDefault(); invokeServerMethod();"))
+                .give(TagContent::text, "Call custom ServerMethod");
 
         new Br(this);
         new Br(this);
@@ -168,6 +284,14 @@ public class UserAccountComponent extends Div {
                     return new AbstractHtml[]{new ItemPriceHistoryChartComponent(documentModel, itemId)};
                 });
 
+        widgetDiv.whenURI(NavigationURI.VIEW_ITEM.getPredicate(documentModel, widgetDiv),
+                () -> {
+                    documentModel.browserPage().getTagRepository().findTitleTag().give(
+                            TagContent::text, "View Item | User Account | wffweb demo");
+                    return new AbstractHtml[]{new ViewItem(documentModel)};
+                });
+
+
         widgetDiv.whenURI(NavigationURI.SAMPLE_TEMPLATE1.getPredicate(documentModel, widgetDiv),
                 () -> {
                     documentModel.browserPage().getTagRepository().findTitleTag().give(
@@ -187,6 +311,13 @@ public class UserAccountComponent extends Div {
                     documentModel.browserPage().getTagRepository().findTitleTag().give(
                             TagContent::text, "RealtimeClock | User Account | wffweb demo");
                     return new AbstractHtml[]{new RealtimeClock(documentModel)};
+                });
+
+        widgetDiv.whenURI(NavigationURI.SAMPLE_FILES_UPLOAD_WITHOUT_ACTION_URL_COMPONENT.getPredicate(documentModel, widgetDiv),
+                () -> {
+                    documentModel.browserPage().getTagRepository().findTitleTag().give(
+                            TagContent::text, "SampleFilesUploadWithoutActionUrlComponent | User Account | wffweb demo");
+                    return new AbstractHtml[]{new SampleFilesUploadWithoutActionUrlComponent()};
                 });
 
 
