@@ -122,7 +122,7 @@ public class IndexPageLayout extends Html {
                     documentModel.browserPage().getTagRepository().findTitleTag().give(
                             TagContent::text, "Server Log | User Account | wffweb demo");
                     if (!(componentDivCurrentChild instanceof RealtimeServerLogComponent)) {
-                        componentDivCurrentChild = new RealtimeServerLogComponent();
+                        componentDivCurrentChild = new RealtimeServerLogComponent(documentModel);
                     }
                     return new AbstractHtml[]{componentDivCurrentChild};
                 });

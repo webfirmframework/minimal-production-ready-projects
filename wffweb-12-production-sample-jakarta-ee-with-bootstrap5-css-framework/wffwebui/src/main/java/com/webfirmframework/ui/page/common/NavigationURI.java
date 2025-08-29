@@ -16,6 +16,8 @@ public enum NavigationURI {
 
     VIEW_ITEMS("/ui/user/items/view", false, false, true),
 
+    VIEW_ITEM("/ui/user/item/view", false, true, true),
+
     ADD_ITEM("/ui/user/items/add", false, false, true),
 
     ITEM_PRICE_HISTORY_CHART("/ui/user/items/pricehistory/{itemId}", false, true, true),
@@ -25,6 +27,8 @@ public enum NavigationURI {
     SAMPLE_TEMPLATE2("/ui/user/sampletemplate2", false, false, true),
 
     REALTIME_CLOCK("/ui/user/realtimeclock", false, false, true),
+
+    SAMPLE_FILES_UPLOAD_WITHOUT_ACTION_URL_COMPONENT("/ui/user/samplefilesuploadwithoutactionurl", false, false, true),
 
     REALTIME_SERVER_LOG("/ui/realtime-server-log", false, false, true);
 
